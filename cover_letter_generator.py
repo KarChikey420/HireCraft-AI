@@ -1,39 +1,31 @@
 import os
 import logging
-from fpdf import FPDF
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import PromptTemplate
+from docx import Document
+from docx.shared import Pt
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 COVER_LETTER_FILE = "cover_letter.txt"
-COVER_LETTER_PDF = "cover_letter.pdf"
+COVER_LETTER_DOCX = "cover_letter.docx"
 
-def save_text_to_pdf(text, pdf_file, title="Cover Letter"):
-    pdf = FPDF()
-    pdf.add_page()
+def save_text_to_docx(text, docx_file, title="Cover Letter"):
+    doc = Document()
+    doc.add_heading(title, 0)
 
-    # Draw border
-    pdf.set_line_width(0.8)
-    pdf.rect(5, 5, 200, 287)  # x, y, width, height
-
-    # Title
-    pdf.set_font("Arial", 'B', 18)
-    pdf.cell(0, 10, title, ln=True, align="C")
-    pdf.ln(10)
-
-    pdf.set_font("Arial", size=12)
     for line in text.split("\n"):
         if line.strip() == "":
-            pdf.ln(2)
+            doc.add_paragraph()
         else:
-            pdf.multi_cell(0, 8, line)
+            p = doc.add_paragraph(line)
+            p.style.font.size = Pt(12)
 
-    pdf.output(pdf_file)
-    logger.info(f"PDF saved to {pdf_file}")
+    doc.save(docx_file)
+    logger.info(f"Word document saved to {docx_file}")
 
 def generate_cover_letter(resume_text, job_description):
     logger.info("Generating cover letter...")
@@ -64,6 +56,6 @@ Generate a professional cover letter tailored for this job.
         f.write(cover_letter)
         logger.info(f"Cover letter saved to {COVER_LETTER_FILE}")
 
-    save_text_to_pdf(cover_letter, COVER_LETTER_PDF, title="Cover Letter")
-    logger.info("Cover letter generation and PDF creation completed successfully.")
+    save_text_to_docx(cover_letter, COVER_LETTER_DOCX)
+    logger.info("Cover letter generation and DOCX creation completed successfully.")
     return cover_letter
