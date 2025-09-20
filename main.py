@@ -1,42 +1,27 @@
-import os
-import pdfplumber
-from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.prompts import PromptTemplate
+import logging
+from resume_refiner import refine_resume
+from cover_letter_generator import generate_cover_letter
 
-load_dotenv()
-
-def extract_text_from_pdf(pdf_file):
-    """Extract text from PDF using pdfplumber"""
-    text_content = ""
-    with pdfplumber.open(pdf_file) as pdf:
-        for page in pdf.pages:
-            text = page.extract_text()
-            if text:
-                text_content += text + "\n"
-    return text_content
-
-def refine_resume(resume_file):
-    resume_content = extract_text_from_pdf(resume_file)
-
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
-        google_api_key=os.getenv("GOOGLE_API"),
-        temperature=0.7
-    )
-
-    prompt = PromptTemplate(
-        input_variables=["resume"],
-        template="Refine the following resume to make it more professional, clear, and impactful:\n\n{resume}"
-    )
-
-    final_prompt = prompt.format(resume=resume_content)
-    response = llm.invoke(final_prompt)
-
-    return response.content
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     resume_file = "cv (5).pdf"
-    refined_resume = refine_resume(resume_file)
-    print(refined_resume)
+    job_description = """
+We are looking for a highly motivated Data Analyst with experience in Python, SQL, and data visualization tools. 
+The ideal candidate should have strong analytical skills, attention to detail, and the ability to work independently on data-driven projects.
+"""
 
+    try:
+        # Step 1: Refine Resume
+        refined_resume = refine_resume(resume_file)
+        logger.info("Refined Resume:\n" + refined_resume)
+
+        # Step 2: Generate Cover Letter
+        cover_letter = generate_cover_letter(refined_resume, job_description)
+        logger.info("Generated Cover Letter:\n" + cover_letter)
+
+    except FileNotFoundError as e:
+        logger.error(f"File not found: {e}")
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
