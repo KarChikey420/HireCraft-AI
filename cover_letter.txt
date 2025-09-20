@@ -1,0 +1,23 @@
+[Your Name]
+[Your Address]
+[Your Phone Number]
+[Your Email Address]
+
+[Date]
+
+[Hiring Manager Name] (If known, otherwise use title)
+[Company Name]
+[Company Address]
+
+Dear [Mr./Ms./Mx. Last Name],
+
+I am writing to express my keen interest in the Data Analyst position advertised on [Platform where you saw the advertisement].  Having followed [Company Name]'s work in [Industry/Specific area] for some time, I am particularly impressed by [Mention something specific you admire about the company – e.g., their innovative approach to data analysis, their commitment to [value], etc.].  My skills and experience in data engineering and analysis align closely with the requirements outlined in the job description, and I am confident I can make a significant contribution to your team.
+
+During my year as a Data Engineer at Yatra Online Ltd., I gained extensive experience in designing, developing, and maintaining robust data systems and ETL pipelines using Python, SQL, and various cloud technologies.  My projects involved processing large-scale datasets to deliver actionable insights, resulting in quantifiable improvements such as a 15% increase in conversion rates through the development of a hotel ranking system and a 10% reduction in operational costs through data-driven solutions implemented with cross-functional teams.  I have a proven track record of working independently on data-driven projects, demonstrated through my independent project work such as TrustTrace Flow and BankPulse, showcasing my proficiency in handling large datasets, building robust data pipelines, and creating insightful visualizations.
+
+My expertise extends beyond data engineering to encompass data analysis and visualization. I am proficient in using tools such as Pandas, NumPy, Matplotlib, Seaborn, and Streamlit to extract meaningful insights from data and present them clearly and effectively.  My experience building interactive dashboards, such as the CRR Dashboard at Yatra, showcases my ability to create user-friendly interfaces for data exploration and reporting.  Furthermore, my recent project, CSV EDA Agent, demonstrates my ability to leverage cutting-edge technologies like LangChain and Google Gemini to enhance data analysis and provide intuitive interfaces for natural language queries.
+
+My skills in Python and SQL, coupled with my strong analytical abilities and attention to detail, make me a highly suitable candidate for this role.  I am eager to learn more about this opportunity and discuss how my skills and experience can benefit [Company Name]. Thank you for your time and consideration.
+
+Sincerely,
+Kartikey Negi
