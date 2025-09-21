@@ -26,11 +26,24 @@ def extract_text_from_pdf(pdf_file):
 
 def refine_resume(resume_file):
     logger.info(f"Refining resume: {resume_file}")
+    
+    # Check if file exists
+    if not os.path.exists(resume_file):
+        raise FileNotFoundError(f"Resume file not found: {resume_file}")
+    
+    # Check if API key is available
+    api_key = os.getenv("GOOGLE_API")
+    if not api_key:
+        raise ValueError("Google API key not found. Please set the GOOGLE_API environment variable.")
+    
     resume_content = extract_text_from_pdf(resume_file)
+    
+    if not resume_content.strip():
+        raise ValueError("No text content extracted from the PDF file. Please check if the PDF contains readable text.")
 
     llm = ChatGoogleGenerativeAI(
         model="gemini-1.5-flash",
-        google_api_key=os.getenv("GOOGLE_API"),
+        google_api_key=api_key,
         temperature=0.7
     )
 
@@ -45,13 +58,21 @@ Please rewrite the resume in a polished, professional format while keeping all i
 """
     )
 
-    final_prompt = prompt.format(resume=resume_content)
-    response = llm.invoke(final_prompt)
+    try:
+        final_prompt = prompt.format(resume=resume_content)
+        response = llm.invoke(final_prompt)
 
-    refined_resume = response.content
-    with open(REFINED_RESUME_FILE, "w", encoding="utf-8") as f:
-        f.write(refined_resume)
-        logger.info(f"Refined resume saved to {REFINED_RESUME_FILE}")
+        refined_resume = response.content
+        
+        # Save to file only if not running in Streamlit
+        if not os.getenv("STREAMLIT_RUNNING"):
+            with open(REFINED_RESUME_FILE, "w", encoding="utf-8") as f:
+                f.write(refined_resume)
+                logger.info(f"Refined resume saved to {REFINED_RESUME_FILE}")
 
-    logger.info("Resume refinement completed successfully.")
-    return refined_resume
+        logger.info("Resume refinement completed successfully.")
+        return refined_resume
+        
+    except Exception as e:
+        logger.error(f"Error during resume refinement: {e}")
+        raise
