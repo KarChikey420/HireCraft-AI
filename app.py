@@ -2,7 +2,7 @@ import streamlit as st
 
 st.set_page_config(page_title="Resume & Cover Letter Generator", layout="wide")
 
-st.title("📄 Resume & Cover Letter Generator")
+st.title("Resume & Cover Letter Generator")
 
 st.markdown("""
 Welcome! This app helps you **refine your resume** and then **generate a tailored cover letter**.  
