@@ -9,7 +9,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-st.title("📨 Step 2: Generate Cover Letter")
+st.title("Step 2: Generate Cover Letter")
 
 if not os.path.exists(REFINED_RESUME_FILE):
     st.warning("⚠ Please refine your resume first (go to **Step 1: Refine Resume**).")
@@ -22,7 +22,7 @@ else:
 
     if st.button("Generate Cover Letter"):
         if not job_description.strip():
-            st.error("⚠ Please provide a job description.")
+            st.error("Please provide a job description.")
         else:
             with st.spinner("Generating cover letter..."):
                 try:
@@ -34,13 +34,13 @@ else:
                     if os.path.exists(COVER_LETTER_FILE):
                         with open(COVER_LETTER_FILE, "r", encoding="utf-8") as f:
                             cl_txt = f.read()
-                        st.download_button("📥 Download Cover Letter (TXT)", cl_txt, file_name="cover_letter.txt")
+                        st.download_button("Download Cover Letter (TXT)", cl_txt, file_name="cover_letter.txt")
 
                     if os.path.exists(COVER_LETTER_DOCX):
                         with open(COVER_LETTER_DOCX, "rb") as f:
                             cl_docx = f.read()
-                        st.download_button("📥 Download Cover Letter (DOCX)", cl_docx, file_name="cover_letter.docx")
+                        st.download_button("Download Cover Letter (DOCX)", cl_docx, file_name="cover_letter.docx")
 
-                    st.success("✅ Cover letter generated successfully.")
+                    st.success("Cover letter generated successfully.")
                 except Exception as e:
                     st.error(f"Error: {e}")
