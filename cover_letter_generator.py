@@ -31,12 +31,10 @@ def save_text_to_docx(text, docx_file, title="Cover Letter"):
 def generate_cover_letter(resume_text, job_description):
     logger.info("Generating cover letter...")
     
-    # Check if API key is available
     api_key = os.getenv("GOOGLE_API")
     if not api_key:
         raise ValueError("Google API key not found.")
     
-    # Validate inputs
     if not resume_text or not resume_text.strip():
         raise ValueError("Resume text is empty.")
     
@@ -49,7 +47,6 @@ def generate_cover_letter(resume_text, job_description):
     if similar_template:
         logger.info(f"Found similar job template! Similarity: {similar_template['similarity']:.2f}")
         
-        # STEP 2: Customize template for THIS specific resume
         llm = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash",
             google_api_key=api_key,
@@ -86,7 +83,6 @@ Create a NEW cover letter that:
         response = llm.invoke(final_prompt)
         cover_letter = response.content
     else:
-        # Generate fresh cover letter
         llm = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash",
             google_api_key=api_key,
@@ -110,10 +106,8 @@ Generate a professional cover letter tailored for this job.
         response = llm.invoke(final_prompt)
         cover_letter = response.content
 
-    # STEP 3: Store this UNIQUE application
     store_job_application(resume_text, job_description, cover_letter)
     
-    # Save files
     if not os.getenv("STREAMLIT_RUNNING"):
         with open(COVER_LETTER_FILE, "w", encoding="utf-8") as f:
             f.write(cover_letter)

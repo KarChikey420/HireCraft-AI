@@ -2,7 +2,6 @@ import chromadb
 import hashlib
 from datetime import datetime
 
-# Initialize Chroma
 client = chromadb.PersistentClient(path="chroma_db")
 collection = client.get_or_create_collection(name="job_applications")
 
@@ -11,17 +10,16 @@ def store_job_application(refined_resume, job_description, cover_letter):
     if not all([refined_resume, job_description, cover_letter]):
         return
     
-    # Create unique ID based on BOTH resume AND job description
     combined_key = refined_resume[:200] + job_description  # First 200 chars of resume + job
     app_id = hashlib.md5(combined_key.encode()).hexdigest()[:12]
     
-    # Store the combination
+
     collection.add(
-        documents=[job_description],  # Still search by job description
+        documents=[job_description], 
         metadatas=[{
             "timestamp": str(datetime.now()),
             "cover_letter": cover_letter,
-            "resume_snippet": refined_resume[:200],  # Store resume snippet for uniqueness
+            "resume_snippet": refined_resume[:200], 
             "job_desc": job_description
         }],
         ids=[f"app_{app_id}"]
