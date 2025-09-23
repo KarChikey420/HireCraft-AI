@@ -1,0 +1,27 @@
+[Kartikey Negi]
+[Your Address]
+[Your Phone Number]
+[Your Email Address]
+[Your LinkedIn Profile URL]
+
+[Date]
+
+[Hiring Manager Name] (If known, otherwise use title)
+[Company Name]
+[Company Address]
+
+Dear [Mr./Ms./Mx. Last Name],
+
+I am writing to express my keen interest in the Data Analyst position at [Company Name], as advertised on [Platform where you saw the advertisement].  Having researched [Company Name]'s innovative work in [Industry/Specific area of company's work, e.g.,  e-commerce analytics, financial modeling, etc.], I am particularly impressed by [Mention something specific you admire – e.g., its recent expansion into new markets, its commitment to data-driven decision-making, a specific project or initiative, etc.]. My skills and experience in data engineering and analysis directly align with the requirements outlined in the job description, and I am confident I can make a significant contribution to your team.
+
+During my year as a Data Engineer/Analyst at Yatra Online Ltd., I gained extensive experience designing, developing, and maintaining robust data systems and pipelines processing large-scale travel data. My expertise encompasses ETL processes, data warehousing, data modeling, and the creation of interactive dashboards using tools like Streamlit.  I have a proven track record of leveraging data to drive business decisions, as demonstrated by my contributions to several key projects.  For example, the CRR Dashboard, a secure, role-based access control dashboard built using Python, Streamlit, and LDAP, provided actionable insights for improved data governance.  Furthermore, my architecture of the hotel ranking system, integrating geospatial data using PostgreSQL and PostGIS, significantly enhanced the accuracy and effectiveness of our hotel recommendations. These projects showcase my ability to translate complex data into actionable insights, directly impacting key business metrics.
+
+
+My proficiency extends beyond data engineering to encompass various programming languages (Python, SQL, Java, C), frameworks (Pandas, NumPy, FastAPI, Flask), and databases (PostgreSQL, MySQL, MongoDB, MSSQL, SQLite). My experience with cloud platforms (AWS S3, EC2, GCP) and tools like Apache Airflow and Docker allows me to efficiently manage and deploy data solutions.  My portfolio, available at [Portfolio URL], further details my projects, including TrustTrace Flow (a patent record ingestion and traceability pipeline) and BankPulse (a real-time banking transaction monitoring system simulating 10,000+ transactions/second). These projects highlight my ability to handle large datasets and implement sophisticated analytical solutions.  The CSV EDA Agent, leveraging Streamlit and LangChain with Google Gemini, showcases my ability to create user-friendly data exploration tools.
+
+My Master of Computer Applications (MCA) from Graphic Era Hill University solidified my foundation in data analysis and computer science principles. I am a highly motivated and results-oriented individual with a passion for leveraging data to solve complex business problems.
+
+Thank you for your time and consideration. I have attached my resume for your review and welcome the opportunity to discuss my qualifications further in an interview.
+
+Sincerely,
+Kartikey Negi

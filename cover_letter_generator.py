@@ -5,6 +5,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from docx import Document
 from docx.shared import Pt
+from db_setup.chromadb import get_similar_job_template, store_job_application
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -33,24 +34,68 @@ def generate_cover_letter(resume_text, job_description):
     # Check if API key is available
     api_key = os.getenv("GOOGLE_API")
     if not api_key:
-        raise ValueError("Google API key not found. Please set the GOOGLE_API environment variable.")
+        raise ValueError("Google API key not found.")
     
     # Validate inputs
     if not resume_text or not resume_text.strip():
-        raise ValueError("Resume text is empty or invalid.")
+        raise ValueError("Resume text is empty.")
     
     if not job_description or not job_description.strip():
-        raise ValueError("Job description is empty or invalid.")
+        raise ValueError("Job description is empty.")
 
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
-        google_api_key=api_key,
-        temperature=0.7
-    )
+    # STEP 1: Check if similar job TEMPLATE exists (for RAG)
+    similar_template = get_similar_job_template(job_description)
+    
+    if similar_template:
+        logger.info(f"Found similar job template! Similarity: {similar_template['similarity']:.2f}")
+        
+        # STEP 2: Customize template for THIS specific resume
+        llm = ChatGoogleGenerativeAI(
+            model="gemini-1.5-flash",
+            google_api_key=api_key,
+            temperature=0.7
+        )
 
-    prompt = PromptTemplate(
-        input_variables=["resume", "job_desc"],
-        template="""
+        customization_prompt = PromptTemplate(
+            input_variables=["template", "resume", "job_desc"],
+            template="""
+Customize this cover letter template for the candidate's specific resume:
+
+TEMPLATE:
+{template}
+
+CANDIDATE RESUME:
+{resume}
+
+JOB DESCRIPTION:
+{job_desc}
+
+Create a NEW cover letter that:
+1. Uses the structure/style of the template
+2. Contains information from THIS candidate's resume
+3. Addresses THIS job requirements
+4. Is completely personalized for this candidate
+"""
+        )
+
+        final_prompt = customization_prompt.format(
+            template=similar_template['cover_letter_template'],
+            resume=resume_text,
+            job_desc=job_description
+        )
+        response = llm.invoke(final_prompt)
+        cover_letter = response.content
+    else:
+        # Generate fresh cover letter
+        llm = ChatGoogleGenerativeAI(
+            model="gemini-1.5-flash",
+            google_api_key=api_key,
+            temperature=0.7
+        )
+
+        prompt = PromptTemplate(
+            input_variables=["resume", "job_desc"],
+            template="""
 Using this refined resume:
 {resume}
 
@@ -59,25 +104,20 @@ And this job description:
 
 Generate a professional cover letter tailored for this job.
 """
-    )
+        )
 
-    try:
         final_prompt = prompt.format(resume=resume_text, job_desc=job_description)
         response = llm.invoke(final_prompt)
-
         cover_letter = response.content
-        
-        # Save to files only if not running in Streamlit
-        if not os.getenv("STREAMLIT_RUNNING"):
-            with open(COVER_LETTER_FILE, "w", encoding="utf-8") as f:
-                f.write(cover_letter)
-                logger.info(f"Cover letter saved to {COVER_LETTER_FILE}")
 
-            save_text_to_docx(cover_letter, COVER_LETTER_DOCX)
-        
-        logger.info("Cover letter generation completed successfully.")
-        return cover_letter
-        
-    except Exception as e:
-        logger.error(f"Error during cover letter generation: {e}")
-        raise
+    # STEP 3: Store this UNIQUE application
+    store_job_application(resume_text, job_description, cover_letter)
+    
+    # Save files
+    if not os.getenv("STREAMLIT_RUNNING"):
+        with open(COVER_LETTER_FILE, "w", encoding="utf-8") as f:
+            f.write(cover_letter)
+        save_text_to_docx(cover_letter, COVER_LETTER_DOCX)
+    
+    logger.info("Cover letter generated and stored successfully.")
+    return cover_letter

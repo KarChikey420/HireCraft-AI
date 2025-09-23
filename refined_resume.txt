@@ -1,0 +1,47 @@
+**Kartikey Negi**
+(+91) 7252911252 | kartikeynegi2002@gmail.com | linkedin.com/in/[LinkedIn Profile URL] | github.com/[GitHub Profile URL] | twitter.com/[Twitter Profile URL] | [Portfolio URL]
+
+**Summary**
+
+Highly motivated and results-oriented Data Engineer with 1 year of experience at Yatra Online Ltd. and a proven track record of designing, developing, and maintaining robust data systems and pipelines.  Proficient in Python, SQL, and various data engineering tools and technologies, with expertise in ETL processes, data warehousing, and building interactive dashboards using Streamlit and other frameworks.  Passionate about leveraging data to drive business decisions and improve operational efficiency.  Seeking a challenging role where I can contribute my skills and experience to a dynamic team.
+
+**Experience**
+
+**Yatra Online Ltd., Gurugram, India**  | **Data Engineer/Analyst** | February 2025 – September 2025
+
+* Developed and maintained multiple data systems, including hotel ranking, dynamic pricing, and customer analytics platforms, processing large-scale travel data.
+* Designed and implemented ETL pipelines using Python, Airflow, and SQL, significantly improving data processing efficiency.
+* Collaborated with cross-functional teams to implement data-driven solutions that enhanced key business metrics.
+* Implemented CI/CD processes and containerized services using Docker, ensuring efficient deployment and monitoring.  Instrumented comprehensive monitoring and alerting systems for data jobs.
+* Key Projects:
+    * **CRR Dashboard:** Developed a Streamlit dashboard with LDAP-based authentication for role-based access, enabling secure data visualization and report generation (Python, Streamlit, Pandas, Requests, APIs, CSV).
+    * **Hotel Ranking System:** Architected a hotel scoring system using PostgreSQL and PostGIS, integrating geospatial data for precise location-based analysis (Flask, PostgreSQL, Streamlit, PostGIS).
+    * **Yatra Travel Chatbot:** Engineered an intelligent chatbot using Dialogflow, FastAPI, and Redis, handling complex flight and hotel queries (FastAPI, Redis, Dialogflow, Streamlit).
+    * **YSF Email Automation System:** Automated partner fare communication using Python, Pandas, and SMTP, improving efficiency and reducing manual effort (Python, Pandas, SMTP, Jinja2).
+
+
+**Projects**
+
+* **TrustTrace Flow** (GitHub: [GitHub Link]) – Developed an ingestion and traceability pipeline for 25,000+ patent records using SHA256 fingerprinting, dual storage in DuckDB, and semantic search with ChromaDB and SentenceTransformers.  Built REST APIs with FastAPI and an interactive Streamlit dashboard. (FastAPI, DuckDB, ChromaDB, SentenceTransformers, Streamlit)
+* **BankPulse** (GitHub: [GitHub Link]) – Designed a real-time banking transaction monitoring system simulating 10,000+ transactions/second. Implemented ingestion and detection mechanisms in Python, leveraging PostgreSQL for state management and deduplication.  Batched results were written to AWS S3 for downstream analytics. (AWS S3, Python, PostgreSQL, Pandas, Boto3)
+* **CSV EDA Agent** (GitHub: [GitHub Link]) – Developed an intelligent CSV data analysis tool using Streamlit and LangChain integrated with the Google Gemini 1.5 model.  Provides a user-friendly interface for uploading CSV files and performing natural language queries. (Streamlit, LangChain, Google Gemini, Pandas, Python)
+
+
+**Technical Skills**
+
+**Programming Languages:** Python, SQL, Java, C
+**Frameworks & Libraries:** Pandas, NumPy, Streamlit, FastAPI, Flask, Matplotlib, Seaborn, LangChain
+**Databases:** MySQL, PostgreSQL, MongoDB, MSSQL, SQLite, Geospatial Databases
+**Developer Tools:** Git, GitHub, Docker, VSCode, Apache Airflow, Kafka, Cron, Dialogflow, Apache Superset, Postman
+**Cloud Platforms:** GCP, AWS (S3, EC2)
+**Concepts:** Data Warehousing, Data Modeling, DBMS, Data Structures & Algorithms, OOP
+
+
+**Education**
+
+**Graphic Era Hill University, Bhimtal, India**
+* **Master of Computer Applications (MCA)**, 2025, CGPA: 8.4/10
+* **Bachelor of Computer Applications (BCA)**, 2023, CGPA: 8.2/10
+
+
+Remember to replace the bracketed placeholders with the actual URLs.  This revised resume is more concise, impactful, and tailored to attract the attention of recruiters.  The summary provides a strong opening statement, and the experience section is organized for better readability.  The project descriptions are more concise and highlight key accomplishments.
