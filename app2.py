@@ -60,6 +60,32 @@ def token_required(f):
         return f(current_user,*args,**kwargs)
     return decorated
 
+@app.route('/signup',methods=['POST'])
+def signup():
+    try:
+        data=request.get_json()
+        username=data.get("username")
+        password=data.get("password")
+        
+        if not username or not password:
+            return jsonify({'message':"username and password are required"}),400
+        
+        conn=get_connection()
+        cur=conn.cursor()
+        
+        hashed_pw=bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt()).decode('utf-8')
+        
+        try:
+            cur.execute("INSERT INTO registered_users(username,password) VALUES (%s,%s)",(username,hashed_pw))
+            conn.commit()
+        except psycopg2.errors.UniqueViolation:
+            conn.rollback()
+            return jsonify({'message':'Username already exists'}),400
+        cur.close()
+        conn.close()
+        return jsonify({'message':'User registered successfully'}),201
+    except Exception as e:
+        print(f"Signup error: {e}")
+        return jsonify({'message':f'Error: {str(e)}'}),500
+    
 
-@app.route('/login',methods=['POST'])
-def 
