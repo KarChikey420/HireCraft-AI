@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 import bcrypt
 import jwt
-from datetime import datetime,timedelta
+from datetime import datetime,timedelta,timezone
 import psycopg2
 from functools import wraps
 from cover_letter_generator import generate_cover_letter
@@ -88,7 +88,7 @@ def signup():
         print(f"Signup error: {e}")
         return jsonify({'message':f'Error: {str(e)}'}),500
     
-@app.route('/api/login',methods=['POST'])
+@app.route('/login',methods=['POST'])
 def login():
     try:
         data=request.get_json()
@@ -97,7 +97,7 @@ def login():
         
         conn=get_connection()
         cur=conn.cursor()
-        cur.execute('SELECT password FROM users WHERE username=%s',(username,))
+        cur.execute('SELECT password FROM  registered_users WHERE username=%s',(username,))
         user=cur.fetchone()
         cur.close()
         conn.close()
@@ -106,7 +106,7 @@ def login():
             return jsonify({'message': 'Invalid username or password!'}), 401
 
         token = jwt.encode(
-            {'username': username, 'exp': datetime.utcnow() + timedelta(hours=2)},
+            {'username': username, 'exp': datetime.now(timezone.utc) + timedelta(hours=2)},
             app.config['SECRET_KEY'],
             algorithm="HS256"
         )
@@ -115,3 +115,7 @@ def login():
     except Exception as e:
         print(f"Login error: {e}")
         return jsonify({'message':f'Error: {str(e)}'}),500
+
+if __name__=='__main__':
+    db_init()
+    app.run(debug=True)
