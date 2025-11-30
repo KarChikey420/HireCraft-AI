@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 import bcrypt
 import jwt
-import datetime
+from datetime import datetime,timedelta
 import psycopg2
 from functools import wraps
 from cover_letter_generator import generate_cover_letter
@@ -88,4 +88,30 @@ def signup():
         print(f"Signup error: {e}")
         return jsonify({'message':f'Error: {str(e)}'}),500
     
+@app.route('/api/login',methods=['POST'])
+def login():
+    try:
+        data=request.get_json()
+        username=data.get('username')
+        password=data.get('password')
+        
+        conn=get_connection()
+        cur=conn.cursor()
+        cur.execute('SELECT password FROM users WHERE username=%s',(username,))
+        user=cur.fetchone()
+        cur.close()
+        conn.close()
+        
+        if not user or not bcrypt.checkpw(password.encode('utf-8'), user[0].encode('utf-8')):
+            return jsonify({'message': 'Invalid username or password!'}), 401
 
+        token = jwt.encode(
+            {'username': username, 'exp': datetime.utcnow() + timedelta(hours=2)},
+            app.config['SECRET_KEY'],
+            algorithm="HS256"
+        )
+
+        return jsonify({'token': token})
+    except Exception as e:
+        print(f"Login error: {e}")
+        return jsonify({'message':f'Error: {str(e)}'}),500
