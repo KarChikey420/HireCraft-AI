@@ -1,6 +1,7 @@
 from flask import Flask,jsonify,request
 from flask_cors import CORS
 from dotenv import load_dotenv
+import tempfile
 import os
 import bcrypt
 import jwt
@@ -115,6 +116,50 @@ def login():
     except Exception as e:
         print(f"Login error: {e}")
         return jsonify({'message':f'Error: {str(e)}'}),500
+    
+@app.route('/refine_resume',methods=['POST'])
+@token_required
+def refine_resume_api():
+    try:
+        if "resume" not in request.files:
+            return jsonify({"error": "Resume PDF file is required"}), 400
+
+        resume_file = request.files["resume"]
+
+        with tempfile.NamedTemporaryFile(delete=True, suffix=".pdf") as temp:
+            resume_file.save(temp.name)
+            processed = refine_resume(temp.name)
+
+        return jsonify({
+            "success": True,
+            "refined_resume": processed["refined_resume"]
+        })
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route("/generate_cover_letter", methods=["POST"])
+@token_required
+def generate_cover_letter_api():
+    try:
+        refined_resume = request.json.get("refined_resume")
+        job_description = request.json.get("job_description")
+
+        if not refined_resume:
+            return jsonify({"error": "refined_resume is required"}), 400
+        if not job_description:
+            return jsonify({"error": "job_description is required"}), 400
+
+        cover_letter = generate_cover_letter(refined_resume, job_description)
+
+        return jsonify({
+            "success": True,
+            "cover_letter": cover_letter
+        })
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+    
 
 if __name__=='__main__':
     db_init()

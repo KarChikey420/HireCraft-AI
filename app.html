@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerCraft - Land Your Dream Job</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for text areas */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #c084fc; 
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #a855f7; 
+        }
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #a855f7;
+            width: 24px;
+            height: 24px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-100 min-h-screen text-slate-800">
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-x-full transition-transform duration-300 bg-white shadow-lg rounded-lg px-4 py-3 border-l-4 border-purple-600 hidden flex items-center gap-3">
+        <div id="toast-icon"></div>
+        <div id="toast-message" class="text-sm font-medium"></div>
+    </div>
+
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="auth-screen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-6xl w-full grid md:grid-cols-2 gap-12 items-center">
+            
+            <!-- Left Side: Branding & Features -->
+            <div class="space-y-8 animate-fade-in-up">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-200">
+                        <i class="fa-solid fa-briefcase text-white text-xl"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-purple-700 tracking-tight">CareerCraft</h1>
+                </div>
+
+                <div class="space-y-4">
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">
+                        Land Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">Dream Job</span>
+                    </h2>
+                    <p class="text-lg text-slate-600 max-w-md">
+                        AI-powered resume refinement and cover letter generation to make you stand out from the crowd.
+                    </p>
+                </div>
+
+                <div class="space-y-6 pt-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mt-1 flex-shrink-0">
+                            <i class="fa-solid fa-wand-magic-sparkles text-yellow-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900">Smart Resume Refinement</h3>
+                            <p class="text-sm text-slate-500">Polish your resume with AI-powered suggestions and ATS optimization.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mt-1 flex-shrink-0">
+                            <i class="fa-regular fa-file-lines text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900">Custom Cover Letters</h3>
+                            <p class="text-sm text-slate-500">Generate tailored cover letters for each specific job description.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mt-1 flex-shrink-0">
+                            <i class="fa-solid fa-rocket text-red-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900">Get Hired Faster</h3>
+                            <p class="text-sm text-slate-500">Stand out from the competition with professional documents.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Login/Signup Card -->
+            <div class="w-full max-w-md mx-auto">
+                <div class="bg-white rounded-2xl shadow-xl p-8 border border-white/50 backdrop-blur-sm">
+                    <div id="login-form-container">
+                        <h2 class="text-2xl font-bold text-slate-900 mb-2">Welcome Back</h2>
+                        <p class="text-slate-500 mb-6">Enter your credentials to continue</p>
+                        
+                        <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                                <input type="text" id="login-username" required 
+                                    class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all bg-slate-50 focus:bg-white"
+                                    placeholder="Enter username">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                                <input type="password" id="login-password" required
+                                    class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all bg-slate-50 focus:bg-white"
+                                    placeholder="••••••••">
+                            </div>
+                            <button type="submit" id="login-btn"
+                                class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-lg transition-colors shadow-lg shadow-purple-200 flex justify-center items-center gap-2">
+                                <span>Sign In</span>
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                            </button>
+                        </form>
+
+                        <div class="mt-6 text-center text-sm">
+                            <span class="text-slate-500">Don't have an account?</span>
+                            <button onclick="toggleAuth('signup')" class="text-purple-600 font-semibold hover:text-purple-700 hover:underline ml-1">Sign up</button>
+                        </div>
+                    </div>
+
+                    <div id="signup-form-container" class="hidden">
+                        <h2 class="text-2xl font-bold text-slate-900 mb-2">Create Account</h2>
+                        <p class="text-slate-500 mb-6">Start your career journey today</p>
+                        
+                        <form id="signup-form" class="space-y-4" onsubmit="handleSignup(event)">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                                <input type="text" id="signup-username" required 
+                                    class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all bg-slate-50 focus:bg-white"
+                                    placeholder="Choose a username">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                                <input type="password" id="signup-password" required
+                                    class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all bg-slate-50 focus:bg-white"
+                                    placeholder="Create password">
+                            </div>
+                            <button type="submit" id="signup-btn"
+                                class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-lg transition-colors shadow-lg shadow-purple-200 flex justify-center items-center gap-2">
+                                <span>Create Account</span>
+                                <i class="fa-solid fa-user-plus"></i>
+                            </button>
+                        </form>
+
+                        <div class="mt-6 text-center text-sm">
+                            <span class="text-slate-500">Already have an account?</span>
+                            <button onclick="toggleAuth('login')" class="text-purple-600 font-semibold hover:text-purple-700 hover:underline ml-1">Sign In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD (Hidden by default) -->
+    <div id="dashboard-screen" class="hidden min-h-screen flex flex-col">
+        <!-- Navbar -->
+        <nav class="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-briefcase text-white text-sm"></i>
+                    </div>
+                    <span class="font-bold text-xl text-slate-800">CareerCraft</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm text-slate-500 hidden md:inline">Logged in as <span id="user-display" class="font-semibold text-purple-700">User</span></span>
+                    <button onclick="handleLogout()" class="text-slate-500 hover:text-red-500 transition-colors">
+                        <i class="fa-solid fa-power-off text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="flex-1 max-w-7xl mx-auto w-full p-4 md:p-8 grid lg:grid-cols-2 gap-8">
+            
+            <!-- COLUMN 1: RESUME REFINER -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-4">
+                        <div class="p-2 bg-yellow-100 rounded-lg text-yellow-600">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-lg text-slate-800">Resume Refiner</h2>
+                            <p class="text-xs text-slate-500">Upload PDF to optimize</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer relative group" id="drop-zone">
+                            <input type="file" id="resume-upload" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleFileSelect(event)">
+                            <div class="space-y-2 pointer-events-none">
+                                <i class="fa-solid fa-cloud-arrow-up text-3xl text-slate-400 group-hover:text-purple-500 transition-colors"></i>
+                                <p class="text-sm text-slate-600 font-medium" id="file-name-display">Click to upload PDF resume</p>
+                                <p class="text-xs text-slate-400">Max file size 5MB</p>
+                            </div>
+                        </div>
+
+                        <button onclick="refineResume()" id="refine-btn" disabled
+                            class="w-full bg-slate-800 hover:bg-slate-900 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-medium py-2.5 rounded-lg transition-colors flex justify-center items-center gap-2">
+                            <span>Refine Resume</span>
+                            <i class="fa-solid fa-gear"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Result Box for Refined Resume -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 h-[500px] flex flex-col">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-semibold text-slate-700">Refined Content</h3>
+                        <button onclick="copyToClipboard('refined-output')" class="text-xs text-purple-600 hover:underline">Copy Text</button>
+                    </div>
+                    <textarea id="refined-output" readonly placeholder="Your refined resume text will appear here..." 
+                        class="flex-1 w-full p-4 bg-slate-50 rounded-xl border border-slate-200 resize-none focus:outline-none text-sm leading-relaxed text-slate-700 font-mono"></textarea>
+                </div>
+            </div>
+
+            <!-- COLUMN 2: COVER LETTER GENERATOR -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-4">
+                        <div class="p-2 bg-blue-100 rounded-lg text-blue-600">
+                            <i class="fa-regular fa-file-lines"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-lg text-slate-800">Cover Letter Generator</h2>
+                            <p class="text-xs text-slate-500">Tailor to job description</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Job Description</label>
+                            <textarea id="job-description" rows="5" 
+                                class="w-full p-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-200 focus:border-purple-500 outline-none transition-all text-sm"
+                                placeholder="Paste the job description here..."></textarea>
+                        </div>
+
+                        <button onclick="generateCoverLetter()" id="generate-btn" disabled
+                            class="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-300 disabled:cursor-not-allowed text-white font-medium py-2.5 rounded-lg transition-colors flex justify-center items-center gap-2">
+                            <span>Generate Cover Letter</span>
+                            <i class="fa-solid fa-pen-nib"></i>
+                        </button>
+                        
+                        <p class="text-xs text-slate-400 text-center italic">* Requires refined resume first</p>
+                    </div>
+                </div>
+
+                <!-- Result Box for Cover Letter -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 h-[500px] flex flex-col">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-semibold text-slate-700">Generated Cover Letter</h3>
+                        <button onclick="copyToClipboard('cover-letter-output')" class="text-xs text-purple-600 hover:underline">Copy Text</button>
+                    </div>
+                    <textarea id="cover-letter-output" readonly placeholder="Your custom cover letter will appear here..." 
+                        class="flex-1 w-full p-4 bg-slate-50 rounded-xl border border-slate-200 resize-none focus:outline-none text-sm leading-relaxed text-slate-700 font-mono"></textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // CONFIGURATION
+        // Change this to your Flask API URL if hosted differently
+        const API_BASE_URL = 'http://127.0.0.1:5000'; 
+        
+        let authToken = null;
+        let refinedResumeText = ""; // Store refined resume locally for the cover letter gen
+
+        // UI HELPERS
+        function toggleAuth(mode) {
+            const loginContainer = document.getElementById('login-form-container');
+            const signupContainer = document.getElementById('signup-form-container');
+            
+            if (mode === 'signup') {
+                loginContainer.classList.add('hidden');
+                signupContainer.classList.remove('hidden');
+            } else {
+                signupContainer.classList.add('hidden');
+                loginContainer.classList.remove('hidden');
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.innerText = message;
+            
+            if (type === 'success') {
+                toast.classList.replace('border-red-500', 'border-purple-600');
+                toastIcon.innerHTML = '<i class="fa-solid fa-circle-check text-purple-600 text-xl"></i>';
+            } else {
+                toast.classList.remove('border-purple-600');
+                toast.classList.add('border-red-500');
+                toastIcon.innerHTML = '<i class="fa-solid fa-circle-exclamation text-red-500 text-xl"></i>';
+            }
+
+            toast.classList.remove('hidden', 'translate-x-full');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3000);
+        }
+
+        function setLoading(btnId, isLoading, defaultText) {
+            const btn = document.getElementById(btnId);
+            if (isLoading) {
+                btn.disabled = true;
+                btn.innerHTML = '<div class="loader border-white/30 border-t-white w-5 h-5"></div>';
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = defaultText;
+            }
+        }
+
+        // AUTHENTICATION LOGIC
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const btnId = 'login-btn';
+            const defaultBtnContent = `<span>Sign In</span><i class="fa-solid fa-arrow-right-to-bracket"></i>`;
+
+            setLoading(btnId, true);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    authToken = data.token;
+                    document.getElementById('user-display').innerText = username;
+                    document.getElementById('auth-screen').classList.add('hidden');
+                    document.getElementById('dashboard-screen').classList.remove('hidden');
+                    showToast('Login successful!');
+                } else {
+                    showToast(data.message || 'Login failed', 'error');
+                }
+            } catch (error) {
+                console.error('API Error:', error);
+                // SIMULATION MODE FOR PREVIEW ONLY (Remove in production)
+                // Since local API calls fail in browser preview sandboxes:
+                if (window.location.hostname !== '127.0.0.1' && window.location.hostname !== 'localhost') {
+                    showToast('Preview Mode: Simulated Login', 'success');
+                    authToken = "simulated_token";
+                    document.getElementById('user-display').innerText = username;
+                    document.getElementById('auth-screen').classList.add('hidden');
+                    document.getElementById('dashboard-screen').classList.remove('hidden');
+                } else {
+                    showToast('Connection error. Is backend running?', 'error');
+                }
+            } finally {
+                setLoading(btnId, false, defaultBtnContent);
+            }
+        }
+
+        async function handleSignup(e) {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const btnId = 'signup-btn';
+            const defaultBtnContent = `<span>Create Account</span><i class="fa-solid fa-user-plus"></i>`;
+
+            setLoading(btnId, true);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Account created! Please log in.');
+                    toggleAuth('login');
+                } else {
+                    showToast(data.message || 'Signup failed', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                showToast('Connection error. Is backend running?', 'error');
+            } finally {
+                setLoading(btnId, false, defaultBtnContent);
+            }
+        }
+
+        function handleLogout() {
+            authToken = null;
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            // Reset fields
+            document.getElementById('refined-output').value = '';
+            document.getElementById('cover-letter-output').value = '';
+            document.getElementById('job-description').value = '';
+            refinedResumeText = "";
+            document.getElementById('generate-btn').disabled = true;
+            document.getElementById('refine-btn').disabled = true;
+        }
+
+        // APP LOGIC
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const refineBtn = document.getElementById('refine-btn');
+            const fileNameDisplay = document.getElementById('file-name-display');
+
+            if (file) {
+                if (file.type !== "application/pdf") {
+                    showToast("Please upload a PDF file", "error");
+                    event.target.value = "";
+                    refineBtn.disabled = true;
+                    fileNameDisplay.innerText = "Click to upload PDF resume";
+                    return;
+                }
+                fileNameDisplay.innerHTML = `<span class="text-slate-800 font-bold">${file.name}</span> selected`;
+                refineBtn.disabled = false;
+                refineBtn.classList.remove('bg-slate-300', 'cursor-not-allowed');
+                refineBtn.classList.add('bg-slate-800', 'hover:bg-slate-900');
+            }
+        }
+
+        async function refineResume() {
+            const fileInput = document.getElementById('resume-upload');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const btnId = 'refine-btn';
+            const defaultBtnContent = `<span>Refine Resume</span><i class="fa-solid fa-gear"></i>`;
+            setLoading(btnId, true);
+
+            const formData = new FormData();
+            formData.append('resume', file);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/refine_resume`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    refinedResumeText = data.refined_resume;
+                    document.getElementById('refined-output').value = refinedResumeText;
+                    
+                    // Enable Cover Letter Generation
+                    const genBtn = document.getElementById('generate-btn');
+                    genBtn.disabled = false;
+                    genBtn.classList.remove('disabled:bg-purple-300', 'disabled:cursor-not-allowed');
+                    
+                    showToast('Resume refined successfully!');
+                } else {
+                    showToast(data.error || 'Failed to refine resume', 'error');
+                }
+            } catch (error) {
+                 // SIMULATION FOR PREVIEW
+                 if (window.location.hostname !== '127.0.0.1') {
+                    setTimeout(() => {
+                        refinedResumeText = "SIMULATED REFINED RESUME:\n\nName: John Doe\nRole: Software Engineer\n\nSummary:\nExperienced developer with a focus on Python and JavaScript.\n\nSkills: Flask, React, SQL, AWS.";
+                        document.getElementById('refined-output').value = refinedResumeText;
+                        document.getElementById('generate-btn').disabled = false;
+                        showToast('Simulated Refinement Success');
+                        setLoading(btnId, false, defaultBtnContent);
+                    }, 1500);
+                    return; // Return early for simulation
+                }
+                showToast('Error connecting to backend', 'error');
+            } finally {
+                if (window.location.hostname === '127.0.0.1') {
+                   setLoading(btnId, false, defaultBtnContent);
+                }
+            }
+        }
+
+        async function generateCoverLetter() {
+            const jobDescription = document.getElementById('job-description').value;
+            
+            if (!jobDescription) {
+                showToast('Please enter a job description', 'error');
+                return;
+            }
+            if (!refinedResumeText) {
+                showToast('Please refine a resume first', 'error');
+                return;
+            }
+
+            const btnId = 'generate-btn';
+            const defaultBtnContent = `<span>Generate Cover Letter</span><i class="fa-solid fa-pen-nib"></i>`;
+            setLoading(btnId, true);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/generate_cover_letter`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        refined_resume: refinedResumeText,
+                        job_description: jobDescription
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('cover-letter-output').value = data.cover_letter;
+                    showToast('Cover Letter generated!');
+                } else {
+                    showToast(data.error || 'Generation failed', 'error');
+                }
+            } catch (error) {
+                // SIMULATION FOR PREVIEW
+                if (window.location.hostname !== '127.0.0.1') {
+                    setTimeout(() => {
+                        document.getElementById('cover-letter-output').value = `Dear Hiring Manager,\n\nI am writing to express my interest in the position based on the job description "${jobDescription.substring(0, 20)}...".\n\nGiven my background in... (Simulated Response)`;
+                        showToast('Simulated Generation Success');
+                        setLoading(btnId, false, defaultBtnContent);
+                    }, 1500);
+                    return;
+                }
+                showToast('Error connecting to backend', 'error');
+            } finally {
+                if (window.location.hostname === '127.0.0.1') {
+                    setLoading(btnId, false, defaultBtnContent);
+                }
+            }
+        }
+
+        function copyToClipboard(elementId) {
+            const copyText = document.getElementById(elementId);
+            copyText.select();
+            document.execCommand("copy");
+            showToast('Copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
