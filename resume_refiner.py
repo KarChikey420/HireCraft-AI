@@ -64,6 +64,7 @@ Please rewrite the resume in a polished, professional format while keeping all i
 
         refined_resume = response.content
         
+        
         # Save to file only if not running in Streamlit
         if not os.getenv("STREAMLIT_RUNNING"):
             with open(REFINED_RESUME_FILE, "w", encoding="utf-8") as f:

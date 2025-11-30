@@ -10,7 +10,7 @@ def store_job_application(refined_resume, job_description, cover_letter):
     if not all([refined_resume, job_description, cover_letter]):
         return
     
-    combined_key = refined_resume[:200] + job_description  # First 200 chars of resume + job
+    combined_key = refined_resume[:200] + job_description 
     app_id = hashlib.md5(combined_key.encode()).hexdigest()[:12]
     
 
@@ -24,26 +24,24 @@ def store_job_application(refined_resume, job_description, cover_letter):
         }],
         ids=[f"app_{app_id}"]
     )
-    print("✅ Unique job application stored in database!")
+    print("Unique job application stored in database!")
 
 def get_similar_job_template(job_description):
     """Get similar job TEMPLATE (structure) for RAG"""
     if not job_description:
         return None
     
-    # Query for similar job descriptions to get TEMPLATE
     results = collection.query(
         query_texts=[job_description],
         n_results=1,
         include=["metadatas", "distances"]
     )
     
-    # Check if similar job exists
     if (results["distances"] and results["distances"][0] and 
         len(results["distances"][0]) > 0 and results["distances"][0][0] < 0.8):
         
         similarity_score = 1 - results["distances"][0][0]
-        if similarity_score > 0.7:  # 70% similarity threshold
+        if similarity_score > 0.7: 
             return {
                 "similarity": similarity_score,
                 "cover_letter_template": results["metadatas"][0][0]["cover_letter"]
