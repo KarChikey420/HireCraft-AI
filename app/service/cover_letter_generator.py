@@ -5,7 +5,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from docx import Document
 from docx.shared import Pt
-from db_setup.chromadb import get_similar_job_template, store_job_application
+from app.db_setup.chromadb import get_similar_job_template, store_job_application
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)

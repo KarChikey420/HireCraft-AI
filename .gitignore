@@ -2,3 +2,5 @@ venv
 .env
 cv (5).pdf
 chroma_db
+test.db
+__pycache__

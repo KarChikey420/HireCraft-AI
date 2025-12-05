@@ -7,7 +7,7 @@ import os
 
 load_dotenv()
 
-SECRET_KEY=os.getenv("Secret_key")
+SECRET_KEY=os.getenv("MY_SECRET_KEY")
 ALGORITHM=os.getenv("Algorithm")
 oath2_scheme=OAuth2PasswordBearer(tokenUrl="token")
 

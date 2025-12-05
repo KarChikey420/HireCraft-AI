@@ -1,16 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from app.service.cover_letter_generator import generate_cover_letter, save_text_to_docx
-from app.service.resume_refiner import refine_resume
-from app.db_setup.auth import current_user,create_access_token
-from app.db_setup.database import SessionLocal,User
+from app.db_setup.auth import create_access_token
+from app.db_setup.database import SessionLocal, User
 from fastapi import HTTPException
 from pydantic import BaseModel
 import hashlib
 import uvicorn
 
-app=FastAPI("resume api")
+app=FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -37,10 +34,6 @@ class LoginRequest(BaseModel):
 class GeneratePPTRequest(BaseModel):
     topic: str
     slide: int = 10
-
-@app.options("/{path:path}")
-def options_handler(path: str):
-    return {"message": "OK"}
 
 @app.post("/signup")
 def signup(request: SignupRequest):
