@@ -47,7 +47,7 @@ def generate_cover_letter(resume_text, job_description):
         logger.info(f"Found similar job template! Similarity: {similar_template['similarity']:.2f}")
         
         llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-flash",
+            model="gemini-2.5-flash",
             google_api_key=api_key,
             temperature=0.7
         )
@@ -83,7 +83,7 @@ Create a NEW cover letter that:
         cover_letter = response.content
     else:
         llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-flash",
+            model="gemini-2.5-flash",
             google_api_key=api_key,
             temperature=0.7
         )

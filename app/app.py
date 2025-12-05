@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File,Depends
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.db_setup.auth import create_access_token
+from app.db_setup.auth import create_access_token, current_user
 from app.db_setup.database import SessionLocal, User
 from app.service.resume_refiner import refine_resume
 from app.service.cover_letter_generator import generate_cover_letter
@@ -72,7 +72,7 @@ def login(request: LoginRequest):
 @app.post("/refiner")
 async def resume_refiner(
     file: UploadFile = File(...),
-    user: str = Depends(User)
+    current_user: str = Depends(current_user)
 ):
     temp_path = f"temp_{uuid.uuid4()}.pdf"
 
@@ -88,8 +88,8 @@ async def resume_refiner(
 async def cover_letter(
     file: UploadFile = File(...),
     job_description: str = File(...),
-    user: str = Depends(User)
-):
+    current_user: str = Depends(current_user)
+    ):
     try:
         temp_pdf = f"temp_{uuid.uuid4()}.pdf"
         with open(temp_pdf, "wb") as f:
