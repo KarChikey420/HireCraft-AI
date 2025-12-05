@@ -41,7 +41,6 @@ def generate_cover_letter(resume_text, job_description):
     if not job_description or not job_description.strip():
         raise ValueError("Job description is empty.")
 
-    # STEP 1: Check if similar job TEMPLATE exists (for RAG)
     similar_template = get_similar_job_template(job_description)
     
     if similar_template:
