@@ -36,27 +36,63 @@ env
 Copy code
 GOOGLE_API=your_google_api_key_here
 ▶️ Usage
-Run the Streamlit app:
 
-bash
-Copy code
-streamlit run app.py
+### Quick Start (Recommended)
+**Windows:**
+```bash
+start_app.bat
+```
+
+**Linux/Mac:**
+```bash
+chmod +x start_app.sh
+./start_app.sh
+```
+
+### Manual Start
+**Backend:**
+```bash
+python -m uvicorn app.app:app --reload --host 0.0.0.0 --port 8000
+```
+
+**Frontend:**
+```bash
+cd resume_ui
+npm run dev
+```
+
+**Access the application:**
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000
 📁 Project Structure
-bash
-Copy code
-├── resume_refiner.py          # Resume processing
-├── cover_letter_generator.py  # Cover letter creation
-├── chromadb.py                # Database storage
-├── app.py                     # Streamlit interface
-├── requirements.txt           # Dependencies
-└── .env                       # Configuration
+```
+├── app/
+│   ├── db_setup/
+│   │   ├── auth.py            # Authentication logic
+│   │   ├── database.py        # Database models
+│   │   └── chromadb.py        # Vector database
+│   ├── service/
+│   │   ├── resume_refiner.py  # Resume processing
+│   │   └── cover_letter_generator.py  # Cover letter creation
+│   └── app.py                 # FastAPI backend
+├── resume_ui/                 # React frontend
+│   ├── src/
+│   │   ├── components/        # UI components
+│   │   ├── pages/            # Application pages
+│   │   └── contexts/         # React contexts
+│   └── package.json          # Frontend dependencies
+├── requirements.txt           # Backend dependencies
+├── start_app.bat             # Windows startup script
+├── start_app.sh              # Unix startup script
+└── .env                      # Configuration
+```
 
 🎯 How It Works
-Upload and refine your resume (PDF format)
-
-Enter job description to generate a customized cover letter
-
-Smart Feature: Similar past applications are reused to save time
+1. **Sign up/Login** - Create an account or log into your existing account
+2. **Upload Resume** - Upload your resume in PDF format for refinement
+3. **Generate Cover Letter** - Enter job description to create a tailored cover letter
+4. **Smart Database** - Similar past applications are reused to save time
+5. **Download** - Get your refined resume and cover letter in DOCX format
 
 📋 Requirements
 Python 3.8+
@@ -66,17 +102,22 @@ Google Generative AI API key
 Resume in PDF format
 
 🔧 Main Dependencies
-Streamlit
+**Backend:**
+- FastAPI
+- LangChain Google GenAI
+- pdfplumber
+- python-docx
+- ChromaDB
+- SQLAlchemy
+- python-dotenv
 
-LangChain Google GenAI
-
-pdfplumber
-
-python-docx
-
-ChromaDB
-
-python-dotenv
+**Frontend:**
+- React + TypeScript
+- Vite
+- Tailwind CSS
+- Radix UI
+- React Router
+- Lucide Icons
 
 🆘 Troubleshooting
 Ensure your PDF contains selectable text (not scanned images)
