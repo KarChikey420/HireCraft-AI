@@ -24,9 +24,9 @@ export default function Signup() {
       await signup(name, email, password);
       toast({
         title: "Account created!",
-        description: "Welcome to ResumeAI. Let's get started!",
+        description: "You can now log in with your credentials.",
       });
-      navigate("/dashboard");
+      navigate("/login");
     } catch (error) {
       toast({
         title: "Signup failed",
