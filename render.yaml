@@ -3,7 +3,9 @@ services:
     name: hirecraft-ai
     env: python
     buildCommand: pip install -r app/requirements.txt
-    startCommand: export PYTHONPATH=/opt/render/project/src/app:$PYTHONPATH && cd app && gunicorn main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    startCommand: export PYTHONPATH=/opt/render/project/src/app:$PYTHONPATH && cd app && gunicorn main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 600 --graceful-timeout 600 --workers 1 --worker-class uvicorn.workers.UvicornWorker
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
+      - key: CHROMA_CACHE_PATH
+        value: /opt/render/.cache/chroma

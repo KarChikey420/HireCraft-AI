@@ -1,8 +1,11 @@
 import chromadb
 import hashlib
 from datetime import datetime
+import os
 
-client = chromadb.PersistentClient(path="chroma_db")
+# Use environment variable for cache path on Render
+CACHE_PATH = os.getenv("CHROMA_CACHE_PATH", "chroma_db")
+client = chromadb.PersistentClient(path=CACHE_PATH)
 collection = client.get_or_create_collection(name="job_applications")
 
 def store_job_application(refined_resume, job_description, cover_letter):
