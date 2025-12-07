@@ -77,51 +77,58 @@ collection = client.get_or_create_collection(
 )
 
 def store_job_application(refined_resume, job_description, cover_letter):
-    if not all([refined_resume, job_description, cover_letter]):
-        return
+    try:
+        if not all([refined_resume, job_description, cover_letter]):
+            return
 
-    unique_key = refined_resume[:200] + job_description
-    app_id = hashlib.md5(unique_key.encode()).hexdigest()[:12]
+        unique_key = refined_resume[:200] + job_description
+        app_id = hashlib.md5(unique_key.encode()).hexdigest()[:12]
 
-    embedding = embeddings.embed_query(job_description)
+        embedding = embeddings.embed_query(job_description)
 
-    collection.add(
-        documents=[job_description],
-        embeddings=[embedding],
-        metadatas=[{
-            "timestamp": str(datetime.now()),
-            "cover_letter": cover_letter,
-            "resume_snippet": refined_resume[:200],
-            "job_desc": job_description
-        }],
-        ids=[f"app_{app_id}"]
-    )
+        collection.add(
+            documents=[job_description],
+            embeddings=[embedding],
+            metadatas=[{
+                "timestamp": str(datetime.now()),
+                "cover_letter": cover_letter,
+                "resume_snippet": refined_resume[:200],
+                "job_desc": job_description
+            }],
+            ids=[f"app_{app_id}"]
+        )
 
-    print("Unique job application stored successfully!")
+        print("Unique job application stored successfully!")
+    except Exception as e:
+        print(f"ChromaDB store error: {e}")
 
 def get_similar_job_template(job_description):
-    if not job_description:
+    try:
+        if not job_description:
+            return None
+
+        query_embedding = embeddings.embed_query(job_description)
+
+        results = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=1,
+            include=["distances", "metadatas"]
+        )
+
+        if (
+            results["distances"]
+            and results["distances"][0]
+            and results["distances"][0][0] < 0.4  
+        ):
+            dist = results["distances"][0][0]
+            similarity = 1 - dist
+
+            return {
+                "similarity": round(similarity, 3),
+                "cover_letter_template": results["metadatas"][0][0]["cover_letter"]
+            }
+
         return None
-
-    query_embedding = embeddings.embed_query(job_description)
-
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=1,
-        include=["distances", "metadatas"]
-    )
-
-    if (
-        results["distances"]
-        and results["distances"][0]
-        and results["distances"][0][0] < 0.4  
-    ):
-        dist = results["distances"][0][0]
-        similarity = 1 - dist
-
-        return {
-            "similarity": round(similarity, 3),
-            "cover_letter_template": results["metadatas"][0][0]["cover_letter"]
-        }
-
-    return None
+    except Exception as e:
+        print(f"ChromaDB query error: {e}")
+        return None
