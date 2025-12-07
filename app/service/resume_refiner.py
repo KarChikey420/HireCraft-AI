@@ -3,7 +3,7 @@ import logging
 import pdfplumber
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
