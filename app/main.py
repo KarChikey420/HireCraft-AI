@@ -1,10 +1,10 @@
 from fastapi import FastAPI, UploadFile, File,Depends
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from db_setup.auth import create_access_token, current_user
-from db_setup.database import SessionLocal, User
-from service.resume_refiner import refine_resume
-from service.cover_letter_generator import generate_cover_letter
+from app.db_setup.auth import create_access_token, current_user
+from app.db_setup.database import SessionLocal, User
+from app.service.resume_refiner import refine_resume
+from app.service.cover_letter_generator import generate_cover_letter
 from fastapi import HTTPException
 from pydantic import BaseModel
 import hashlib
