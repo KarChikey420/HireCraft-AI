@@ -71,6 +71,7 @@ Create a NEW cover letter that:
 2. Contains information from THIS candidate's resume
 3. Addresses THIS job requirements
 4. Is completely personalized for this candidate
+5.consise the cover latter in page 
 """
         )
 
@@ -97,7 +98,9 @@ Using this refined resume:
 And this job description:
 {job_desc}
 
-Generate a professional cover letter tailored for this job.
+1. Generate a professional cover letter tailored for this job.
+2. Is completely personalized for this candidate
+3. only one page content give to user  
 """
         )
 
