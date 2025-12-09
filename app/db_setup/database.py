@@ -14,9 +14,9 @@ Base=declarative_base()
 class User(Base):
     __tablename__="users"
     id=Column(Integer,primary_key=True,index=True)
-    name=Column(String(50))
-    email=Column(String(50))
-    password=Column(String(200))
+    name=Column(String(100))
+    email=Column(String(255))
+    password=Column(String(255))
     
 Base.metadata.create_all(bind=engine)
 
