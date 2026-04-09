@@ -1,8 +1,13 @@
 import uvicorn
+import sys
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api.api import api_router
+# Ensure the parent directory is in the path to avoid ModuleNotFoundError on production
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from app.api.api import api_router
 
 app = FastAPI(
     title="HireCraft-AI",
