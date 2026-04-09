@@ -1,13 +1,11 @@
 # 📄 HireCraft-AI
 
-An **AI-powered tool** that helps you create professional resumes and tailored cover letters with ease.
+An **AI-powered tool** that helps you create professional resumes with ease.
 
 ---
 
 ## 🚀 Features
 - **Resume Refinement**: Automatically polish your uploaded PDF resume  
-- **Cover Letter Generation**: Create tailored cover letters for job applications  
-- **Smart Database**: Stores and reuses similar applications to save time  
 - **Web Interface**: Simple and interactive Streamlit-based interface  
 
 ---
@@ -70,11 +68,9 @@ npm run dev
 │   ├── db_setup/
 │   │   ├── auth.py            # Authentication logic
 │   │   ├── database.py        # Database models
-│   │   └── chromadb.py        # Vector database
 │   ├── service/
-│   │   ├── resume_refiner.py  # Resume processing
-│   │   └── cover_letter_generator.py  # Cover letter creation
-│   └── app.py                 # FastAPI backend
+│   │   └── resume_refiner.py  # Resume processing
+│   └── main.py                 # FastAPI backend
 ├── resume_ui/                 # React frontend
 │   ├── src/
 │   │   ├── components/        # UI components
@@ -90,9 +86,7 @@ npm run dev
 🎯 How It Works
 1. **Sign up/Login** - Create an account or log into your existing account
 2. **Upload Resume** - Upload your resume in PDF format for refinement
-3. **Generate Cover Letter** - Enter job description to create a tailored cover letter
-4. **Smart Database** - Similar past applications are reused to save time
-5. **Download** - Get your refined resume and cover letter in DOCX format
+3. **Download** - Get your refined resume data
 
 📋 Requirements
 Python 3.8+
@@ -106,8 +100,6 @@ Resume in PDF format
 - FastAPI
 - LangChain Google GenAI
 - pdfplumber
-- python-docx
-- ChromaDB
 - SQLAlchemy
 - python-dotenv
 
