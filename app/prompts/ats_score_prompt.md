@@ -24,3 +24,4 @@ Analyze the resume against the job description using this weighted rubric:
 - Be precise and realistic.
 - Do NOT inflate scores.
 - Output ONLY valid JSON.
+- DO NOT include any introductory or concluding text. Start your response with `{` and end with `}`.

@@ -1,9 +1,10 @@
-import uuid
-import os
+import io
 from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException
+from sqlalchemy.orm import Session
 
 from app.db_setup.auth import current_user as auth_user
-from app.service.resume_refiner import refine_resume, tailor_resume, ats_score
+from app.db_setup.database import get_db, User, Resume
+from app.service.resume_refiner import refine_resume, tailor_resume, ats_score, extract_text_from_pdf
 from app.service.schemas import (
     TailorResumeRequest,
     TailorResumeResponse,
@@ -13,32 +14,104 @@ from app.service.schemas import (
 
 router = APIRouter()
 
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+
 @router.post("/refiner")
 async def resume_refiner(
     file: UploadFile = File(...),
     job_description: str = Form(""),
     mode: str = Form("polish"),
     target_role: str = Form(""),
-    current_user: str = Depends(auth_user)
+    user_email: str = Depends(auth_user),
+    db: Session = Depends(get_db)
 ):
-    """Refine a resume (Upload PDF)."""
-    temp_path = f"temp_{uuid.uuid4()}.pdf"
+    """Refine a resume (Store in DB, No temporary files)."""
+    print(f"DEBUG: Starting refinement for {user_email}")
+    # 1. Size Validation
+    contents = await file.read()
+    if len(contents) > MAX_FILE_SIZE:
+        print(f"DEBUG: File too large: {len(contents)}")
+        raise HTTPException(413, "File too large. Maximum size is 10MB.")
 
-    with open(temp_path, "wb") as f:
-        f.write(await file.read())
-
+    # 2. Extract Text (In-memory)
     try:
+        print("DEBUG: Extracting text in-memory...")
+        pdf_stream = io.BytesIO(contents)
+        text_content = extract_text_from_pdf(pdf_stream)
+        print(f"DEBUG: Extracted {len(text_content)} characters")
+        
+        # 3. Process with LLM
+        pdf_stream.seek(0)
+        print("DEBUG: Calling LLM Engine...")
         refined_output = refine_resume(
-            resume_file=temp_path,
+            resume_source=pdf_stream,
             job_description=job_description,
             mode=mode,
             target_role=target_role
         )
-    finally:
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
+        print("DEBUG: LLM Refinement success")
 
-    return refined_output
+        # 4. Persistence (History Mode)
+        print("DEBUG: Persisting to DB...")
+        user = db.query(User).filter(User.email == user_email).first()
+        if not user:
+            print(f"DEBUG: User not found in DB: {user_email}")
+            raise HTTPException(404, "User context lost.")
+            
+        new_resume = Resume(
+            user_id=user.id,
+            filename=file.filename,
+            raw_content=contents,
+            parsed_text=text_content
+        )
+        db.add(new_resume)
+        db.commit()
+        print("DEBUG: DB Persistence success")
+
+        return refined_output
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"DEBUG: Refinement CRASHED: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(500, f"Refinement failed: {str(e)}")
+
+
+@router.post("/resume/parse")
+async def resume_parse(
+    file: UploadFile = File(...),
+    user_email: str = Depends(auth_user),
+    db: Session = Depends(get_db)
+):
+    """Extract text from a resume PDF and store in DB."""
+    # 1. Size Validation
+    contents = await file.read()
+    if len(contents) > MAX_FILE_SIZE:
+        raise HTTPException(413, "File too large. Maximum size is 10MB.")
+
+    # 2. Extract Text (In-memory)
+    try:
+        pdf_stream = io.BytesIO(contents)
+        text_content = extract_text_from_pdf(pdf_stream)
+
+        # 3. Persistence
+        user = db.query(User).filter(User.email == user_email).first()
+        if not user:
+             raise HTTPException(404, "User context lost.")
+
+        new_resume = Resume(
+            user_id=user.id,
+            filename=file.filename,
+            raw_content=contents,
+            parsed_text=text_content
+        )
+        db.add(new_resume)
+        db.commit()
+
+        return {"text": text_content}
+    except Exception as e:
+        raise HTTPException(500, f"Parsing failed: {str(e)}")
 
 
 @router.post("/resume/tailor", response_model=TailorResumeResponse)

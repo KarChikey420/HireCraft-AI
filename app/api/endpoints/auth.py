@@ -8,12 +8,10 @@ from app.service.schemas import SignupRequest, LoginRequest
 
 router = APIRouter()
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+from sqlalchemy.orm import Session
+from app.db_setup.database import SessionLocal, User, get_db
+
+router = APIRouter()
 
 @router.post("/signup")
 def signup(request: SignupRequest, db: Session = Depends(get_db)):

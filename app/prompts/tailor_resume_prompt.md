@@ -15,6 +15,7 @@ Rewrite the resume to mirror JD language while maintaining 100% honesty.
 - NO re-ordering or inventing sections.
 - Preserve original company names and education.
 - Output ONLY valid JSON.
+- DO NOT include any introductory or concluding text. Start your response with `{` and end with `}`.
 
 **Output Structure**
 {

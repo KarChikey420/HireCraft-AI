@@ -22,11 +22,10 @@ def _get_llm(temperature: float = 0.2) -> ChatOpenAI:
         raise ValueError("gpt-oss-120 API key missing in environment.")
     
     return ChatOpenAI(
-        model="openai/gpt-oss-120b",
+        model="meta/llama-3.1-405b-instruct",
         api_key=api_key,
-        base_url="http://127.0.0.1:8000/v1",  # Local inference server endpoint
+        base_url="https://integrate.api.nvidia.com/v1",  # Official NVIDIA Cloud API
         temperature=temperature,
-        model_kwargs={"response_format": {"type": "json_object"}},
     )
 
 
@@ -44,29 +43,45 @@ def _load_prompt(filename: str) -> str:
 
 
 def _parse_json_response(raw: str) -> dict:
-    """Strip optional markdown fences and parse JSON from LLM output."""
+    """Robustly extract and parse JSON from LLM output, handling prefixes and markdown fences."""
     content = raw.strip()
-    if content.startswith("```json"):
-        content = content[7:]
-    if content.startswith("```"):
-        content = content[3:]
-    if content.endswith("```"):
-        content = content[:-3]
+    
+    # Try to find JSON within markdown code blocks first
+    if "```json" in content:
+        content = content.split("```json")[1].split("```")[0].strip()
+    elif "```" in content:
+        # Fallback for generic code blocks
+        content = content.split("```")[1].split("```")[0].strip()
+    
+    # If no fences are found, or if we still have text around the JSON, 
+    # find the first '{' and last '}'
+    start = content.find("{")
+    end = content.rfind("}")
+    
+    if start != -1 and end != -1:
+        content = content[start : end + 1]
+
     try:
-        return json.loads(content.strip())
+        return json.loads(content)
     except json.JSONDecodeError as e:
-        logger.error(f"Failed to parse LLM JSON output: {e}\nRaw output: {raw}")
+        logger.error(f"Failed to parse LLM JSON output: {e}\nProcessed content: {content}\nRaw output: {raw}")
         raise ValueError("LLM failed to produce valid structured JSON output.")
 
 
-def extract_text_from_pdf(pdf_file) -> str:
-    logger.info(f"Extracting text from PDF: {pdf_file}")
+def extract_text_from_pdf(pdf_source) -> str:
+    """Extract text from a PDF path or file-like object."""
+    logger.info("Extracting text from PDF source")
     text_content = ""
-    with pdfplumber.open(pdf_file) as pdf:
-        for page in pdf.pages:
-            text = page.extract_text()
-            if text:
-                text_content += text + "\n"
+    try:
+        with pdfplumber.open(pdf_source) as pdf:
+            for page in pdf.pages:
+                text = page.extract_text()
+                if text:
+                    text_content += text + "\n"
+    except Exception as e:
+        logger.error(f"pdfplumber failed: {e}")
+        raise ValueError(f"Could not parse PDF: {str(e)}")
+
     if not text_content.strip():
         raise ValueError("No readable text found in PDF.")
     return text_content
@@ -74,13 +89,10 @@ def extract_text_from_pdf(pdf_file) -> str:
 
 # ── Feature 0: Existing Resume Refinement ───────────────────────────────────
 
-def refine_resume(resume_file, job_description="", mode="polish", target_role=""):
-    logger.info(f"Refining resume: {resume_file} with mode: {mode}")
+def refine_resume(resume_source, job_description="", mode="polish", target_role=""):
+    logger.info(f"Refining resume from source with mode: {mode}")
 
-    if not os.path.exists(resume_file):
-        raise FileNotFoundError(f"Resume file not found: {resume_file}")
-
-    resume_text = extract_text_from_pdf(resume_file)
+    resume_text = extract_text_from_pdf(resume_source)
     llm = _get_llm(temperature=0.2)
     system_prompt = _load_prompt("resume_refiner_prompt.md")
 

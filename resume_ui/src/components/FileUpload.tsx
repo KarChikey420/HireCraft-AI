@@ -61,11 +61,11 @@ export function FileUpload({
   return (
     <div
       className={cn(
-        "relative rounded-xl border-2 border-dashed transition-all duration-300",
+        "relative rounded-3xl border-2 border-dashed transition-all duration-500 group",
         isDragging
-          ? "border-secondary bg-secondary/10 scale-[1.02]"
-          : "border-border bg-card hover:border-secondary/50",
-        isUploading && "pointer-events-none opacity-70"
+          ? "border-amber-500 bg-amber-500/5 scale-[1.01] shadow-2xl shadow-amber-500/10"
+          : "border-zinc-800 bg-zinc-900/40 hover:border-zinc-700 hover:bg-zinc-900/60",
+        isUploading && "pointer-events-none opacity-50"
       )}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -75,25 +75,36 @@ export function FileUpload({
         type="file"
         accept={accept}
         onChange={handleFileInput}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
         disabled={isUploading}
       />
-      <div className="flex flex-col items-center justify-center p-8 text-center">
+      <div className="flex flex-col items-center justify-center p-12 text-center min-h-[320px] relative overflow-hidden">
+        {/* Background glow effect on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        
         {isUploading ? (
-          <>
-            <Loader2 className="h-12 w-12 text-secondary animate-spin mb-4" />
-            <p className="text-sm font-medium text-foreground">Processing...</p>
-          </>
+          <div className="space-y-6 animate-in fade-in zoom-in duration-300">
+            <div className="relative">
+              <div className="absolute inset-0 bg-amber-500/20 blur-xl rounded-full" />
+              <Loader2 className="h-16 w-16 text-amber-500 animate-spin relative" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-lg font-bold text-zinc-100 tracking-tight">Processing Engine...</p>
+              <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest">Atomic Analysis in progress</p>
+            </div>
+          </div>
         ) : selectedFile ? (
-          <>
-            <div className="flex items-center gap-3 p-4 bg-muted rounded-lg mb-4">
-              <File className="h-8 w-8 text-secondary" />
-              <div className="text-left">
-                <p className="text-sm font-medium text-foreground truncate max-w-[200px]">
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 w-full max-w-sm mx-auto">
+            <div className="flex items-center gap-4 p-6 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl relative group-file">
+              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                <File className="h-8 w-8 text-amber-500" />
+              </div>
+              <div className="text-left flex-grow min-w-0">
+                <p className="text-sm font-bold text-zinc-100 truncate">
                   {selectedFile.name}
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
+                  {(selectedFile.size / 1024 / 1024).toFixed(2)} MB • Ready
                 </p>
               </div>
               <button
@@ -101,24 +112,33 @@ export function FileUpload({
                   e.stopPropagation();
                   clearFile();
                 }}
-                className="p-1 rounded-full hover:bg-background transition-colors"
+                className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-red-400 transition-all ml-2"
               >
-                <X className="h-4 w-4 text-muted-foreground" />
+                <X className="h-5 w-5" />
               </button>
             </div>
-            <p className="text-xs text-muted-foreground">Click or drag to replace</p>
-          </>
-        ) : (
-          <>
-            <div className="p-4 rounded-full bg-secondary/10 mb-4">
-              <Upload className="h-8 w-8 text-secondary" />
+            <div className="space-y-4">
+               <p className="text-xs text-zinc-500 font-medium">Click or drag another file to replace</p>
             </div>
-            <p className="text-sm font-medium text-foreground mb-1">{label}</p>
-            <p className="text-xs text-muted-foreground">{description}</p>
-            <p className="text-xs text-secondary mt-2">
-              Drag & drop or click to browse
-            </p>
-          </>
+          </div>
+        ) : (
+          <div className="space-y-6 transition-transform duration-500 group-hover:scale-[1.02]">
+            <div className="relative mx-auto w-fit">
+              <div className="absolute inset-0 bg-amber-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="p-6 rounded-2xl bg-zinc-950 border border-zinc-900 shadow-xl relative transition-all group-hover:border-amber-500/30">
+                <Upload className="h-10 w-10 text-amber-500 group-hover:scale-110 transition-transform duration-500" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <p className="text-xl font-bold text-zinc-100 tracking-tight">{label}</p>
+              <p className="text-sm text-zinc-500 font-medium">{description}</p>
+            </div>
+            <div className="pt-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+                Drag & drop or click to browse
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
