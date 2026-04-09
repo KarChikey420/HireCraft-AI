@@ -2,10 +2,10 @@ import io
 from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.db_setup.auth import current_user as auth_user
-from app.db_setup.database import get_db, User, Resume
-from app.service.resume_refiner import refine_resume, tailor_resume, ats_score, extract_text_from_pdf
-from app.service.schemas import (
+from ...db_setup.auth import current_user as auth_user
+from ...db_setup.database import get_db, User, Resume
+from ...service.resume_refiner import refine_resume, tailor_resume, ats_score, extract_text_from_pdf
+from ...service.schemas import (
     TailorResumeRequest,
     TailorResumeResponse,
     ATSScoreRequest,
