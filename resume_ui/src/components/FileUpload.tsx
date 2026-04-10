@@ -61,10 +61,10 @@ export function FileUpload({
   return (
     <div
       className={cn(
-        "relative rounded-3xl border-2 border-dashed transition-all duration-500 group",
+        "relative rounded border-2 border-dashed transition-all duration-500 group",
         isDragging
           ? "border-emerald-500 bg-emerald-500/5 scale-[1.01] shadow-2xl shadow-emerald-500/10"
-          : "border-border bg-card/40 hover:border-emerald-500/30 hover:bg-card/60",
+          : "border-zinc-800 bg-zinc-950/20 hover:border-emerald-500/30 hover:bg-zinc-900",
         isUploading && "pointer-events-none opacity-50"
       )}
       onDragOver={handleDragOver}
@@ -89,21 +89,21 @@ export function FileUpload({
               <Loader2 className="h-16 w-16 text-emerald-500 animate-spin relative" />
             </div>
             <div className="space-y-2">
-              <p className="text-lg font-bold text-zinc-100 tracking-tight">Processing Engine...</p>
-              <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest font-mono">Atomic Analysis in progress</p>
+              <p className="text-sm font-bold text-zinc-100 tracking-tighter uppercase font-mono">Processing Engine...</p>
+              <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest font-mono">Atomic Analysis in progress</p>
             </div>
           </div>
         ) : selectedFile ? (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 w-full max-w-sm mx-auto">
-            <div className="flex items-center gap-4 p-6 bg-card border border-border rounded-2xl shadow-2xl relative group-file">
-              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+            <div className="flex items-center gap-4 p-6 bg-zinc-900 border border-zinc-800 rounded shadow-2xl relative group-file">
+              <div className="p-3 rounded border border-emerald-500/20 bg-emerald-500/10">
                 <File className="h-8 w-8 text-emerald-500" />
               </div>
               <div className="text-left flex-grow min-w-0">
-                <p className="text-sm font-bold text-zinc-100 truncate font-mono">
+                <p className="text-[11px] font-bold text-zinc-100 truncate font-mono uppercase tracking-tighter">
                   {selectedFile.name}
                 </p>
-                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1 font-mono">
+                <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mt-1 font-mono">
                   {(selectedFile.size / 1024 / 1024).toFixed(2)} MB • Ready
                 </p>
               </div>
@@ -112,26 +112,26 @@ export function FileUpload({
                   e.stopPropagation();
                   clearFile();
                 }}
-                className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-red-400 transition-all ml-2"
+                className="p-2 rounded hover:bg-zinc-800 text-zinc-600 hover:text-red-900 transition-all ml-2"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
           </div>
         ) : (
-          <div className="space-y-6 transition-transform duration-500 group-hover:scale-[1.02]">
+          <div className="space-y-6 transition-transform duration-500 group-hover:scale-[1.01]">
             <div className="relative mx-auto w-fit">
               <div className="absolute inset-0 bg-emerald-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="p-6 rounded-2xl bg-background border border-border shadow-xl relative transition-all group-hover:border-emerald-500/30">
-                <Upload className="h-10 w-10 text-emerald-500 group-hover:scale-110 transition-transform duration-500" />
+              <div className="p-6 rounded border border-zinc-800 bg-zinc-900 shadow-xl relative transition-all group-hover:border-emerald-500/30">
+                <Upload className="h-8 w-8 text-emerald-500 group-hover:scale-110 transition-transform duration-500" />
               </div>
             </div>
             <div className="space-y-2">
-              <p className="text-xl font-bold text-zinc-100 tracking-tight">{label}</p>
-              <p className="text-sm text-zinc-500 font-medium">{description}</p>
+              <p className="text-xs font-bold text-zinc-200 uppercase tracking-[0.2em] font-mono">{label}</p>
+              <p className="text-[10px] text-zinc-600 font-mono uppercase tracking-widest">{description}</p>
             </div>
             <div className="pt-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-[10px] font-bold text-zinc-400 uppercase tracking-widest font-mono">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded border border-zinc-800 bg-zinc-950/50 text-[9px] font-bold text-zinc-700 uppercase tracking-widest font-mono">
                 Drag & drop or click to browse
               </div>
             </div>
@@ -140,5 +140,4 @@ export function FileUpload({
       </div>
     </div>
   );
-}
 }

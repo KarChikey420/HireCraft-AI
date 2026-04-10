@@ -34,63 +34,75 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col lg:flex-row overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground flex flex-col lg:flex-row overflow-hidden font-sans selection:bg-emerald-500/30">
       {/* Visual Side */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-card items-center justify-center p-12 overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/10 blur-[120px] rounded-full animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-500/5 blur-[150px] rounded-full animate-pulse delay-700" />
+      <div className="hidden lg:flex lg:w-1/2 relative bg-zinc-950 items-center justify-center p-12 overflow-hidden border-r border-zinc-900">
+        <div className="scanline pointer-events-none opacity-20" />
+        <div className="absolute inset-0 bg-dot-grid opacity-40 pointer-events-none" />
         
-        <div className="max-w-md relative z-10">
-          <div className="flex flex-col gap-10">
-            <div className="space-y-4">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 w-fit shadow-2xl shadow-emerald-500/20">
-                <FileText className="h-10 w-10 text-zinc-950" />
+        {/* Technical Gloom */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/5 blur-[120px] rounded-full animate-pulse" />
+        
+        <div className="max-w-md relative z-10 space-y-12">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded border border-emerald-500/30 bg-emerald-500/5 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                <FileText className="h-8 w-8 text-emerald-500" />
               </div>
-              <h2 className="text-4xl font-bold tracking-tighter text-zinc-100">
-                Forge your career with <span className="text-emerald-500">Atomic Precision.</span>
-              </h2>
-              <p className="text-lg text-zinc-500 font-medium">
-                The most advanced AI-powered resume optimization engine for elite professionals.
-              </p>
+              <div className="h-[1px] w-24 bg-zinc-800" />
             </div>
+            <h2 className="text-4xl font-bold tracking-tighter text-zinc-100 uppercase leading-none">
+              Forge assets with<br/>
+              <span className="text-emerald-500 terminal-glow">Atomic Precision.</span>
+            </h2>
+            <p className="text-xs font-mono text-zinc-600 uppercase tracking-widest leading-relaxed">
+              High-fidelity career documentation engine for elite developers and technical operators.
+            </p>
+          </div>
 
-            <div className="space-y-6">
-              {[
-                { icon: <Target className="h-5 w-5 text-emerald-500" />, title: "ATS Infiltration", desc: "Outsmart algorithms with strategic keyword injection." },
-                { icon: <Zap className="h-5 w-5 text-emerald-500" />, title: "Instant Refinement", desc: "Rewrite weak bullets into high-impact metrics in seconds." },
-                { icon: <ShieldCheck className="h-5 w-5 text-emerald-500" />, title: "Verified Patterns", desc: "Industry-standard templates that recruiters love." }
-              ].map((item, i) => (
-                <div key={i} className="flex gap-4 p-4 rounded-2xl bg-background/50 border border-border backdrop-blur-sm">
-                  <div className="shrink-0">{item.icon}</div>
-                  <div>
-                    <h4 className="text-sm font-bold text-zinc-200">{item.title}</h4>
-                    <p className="text-xs text-zinc-500 leading-relaxed font-medium">{item.desc}</p>
-                  </div>
+          <div className="space-y-4">
+            {[
+              { icon: <Target className="h-4 w-4 text-emerald-500/50" />, title: "ATS [INFILTRATION]", desc: "Outsmart algorithms with strategic keyword injection." },
+              { icon: <Zap className="h-4 w-4 text-emerald-500/50" />, title: "INSTANT [REFINEMENT]", desc: "Rewrite weak bullets into high-impact metrics in seconds." },
+              { icon: <ShieldCheck className="h-4 w-4 text-emerald-500/50" />, title: "VERIFIED [PATTERNS]", desc: "Industry-standard templates that recruiters love." }
+            ].map((item, i) => (
+              <div key={i} className="flex gap-4 p-5 rounded border border-zinc-900 bg-zinc-950/50 backdrop-blur-sm group hover:border-emerald-500/20 transition-colors">
+                <div className="shrink-0 mt-0.5">{item.icon}</div>
+                <div className="space-y-1">
+                  <h4 className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.2em]">{item.title}</h4>
+                  <p className="text-[9px] text-zinc-600 font-mono uppercase leading-tight tracking-tighter">{item.desc}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="pt-8 font-mono text-[8px] text-zinc-800 uppercase tracking-widest leading-tight">
+            SYST_REF: 0x2A_FF<br/>
+            STATUS: SECURE_CORE_ACTIVE<br/>
+            ENCRYPTION: AES_256_ACTIVE
           </div>
         </div>
-
-        {/* Decorative Grid */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-             style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       </div>
 
       {/* Form Side */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background">
-        <div className="w-full max-w-sm space-y-10 animate-in fade-in slide-in-from-right-4 duration-700">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-100">Log in</h1>
-            <p className="text-zinc-500 font-medium">
-              Access your HireCraft Command Center
-            </p>
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-emerald-500/[0.02] blur-[100px] rounded-full pointer-events-none" />
+        <div className="w-full max-w-sm space-y-10 animate-in fade-in slide-in-from-right-4 duration-700 relative z-10">
+          <div className="space-y-4">
+            <div className="inline-flex px-2 py-0.5 rounded border border-emerald-500/20 bg-emerald-500/5 text-emerald-500 text-[9px] font-mono font-bold uppercase tracking-widest">
+              [ AUTH_GATE ]
+            </div>
+            <div className="space-y-1">
+              <h1 className="text-3xl font-bold tracking-tighter text-zinc-100 uppercase">Login</h1>
+              <p className="text-[10px] text-zinc-600 font-mono uppercase tracking-widest">
+                Access your HireCraft Command Center
+              </p>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-zinc-400 text-xs font-bold uppercase tracking-widest font-mono pl-1">Target Email</Label>
+              <Label htmlFor="email" className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.2em] font-mono pl-1">Target Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -98,14 +110,14 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-12 bg-card border-border text-zinc-100 placeholder:text-zinc-700 focus:ring-emerald-500 focus:border-emerald-500 rounded-xl transition-all"
+                className="h-11 bg-zinc-950 border-zinc-800 text-zinc-100 placeholder:text-zinc-800 focus:ring-emerald-500/30 focus:border-emerald-500/50 rounded-sm font-mono text-xs transition-all uppercase px-4"
               />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between pl-1">
-                <Label htmlFor="password" className="text-zinc-400 text-xs font-bold uppercase tracking-widest font-mono">Access Key</Label>
-                <a href="#" className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest font-mono hover:underline">Lost access?</a>
+                <Label htmlFor="password" className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.2em] font-mono">Access Key</Label>
+                <a href="#" className="text-[9px] text-emerald-600 font-bold uppercase tracking-widest font-mono hover:text-emerald-500">Lost access?</a>
               </div>
               <Input
                 id="password"
@@ -114,13 +126,13 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="h-12 bg-card border-border text-zinc-100 placeholder:text-zinc-700 focus:ring-emerald-500 focus:border-emerald-500 rounded-xl transition-all"
+                className="h-11 bg-zinc-950 border-zinc-800 text-zinc-100 placeholder:text-zinc-800 focus:ring-emerald-500/30 focus:border-emerald-500/50 rounded-sm font-mono text-xs transition-all uppercase px-4"
               />
             </div>
 
             <Button 
               type="submit" 
-              className="w-full h-12 bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition-all active:scale-[0.98]" 
+              className="w-full h-12 bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold rounded shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all active:scale-[0.98] font-mono uppercase text-xs tracking-[0.2em]" 
               disabled={isLoading}
             >
               {isLoading ? (
@@ -134,9 +146,14 @@ export default function Login() {
             </Button>
           </form>
 
-          <div className="pt-2 text-center text-sm font-medium">
-            <span className="text-zinc-500">Need an operative account?</span>{" "}
-            <Link to="/signup" className="text-emerald-500 hover:text-emerald-400 transition-colors font-bold pl-1 font-mono uppercase text-[11px] tracking-wider">
+          <div className="pt-4 text-center">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-[1px] flex-grow bg-zinc-900" />
+              <span className="text-[9px] text-zinc-800 font-mono font-bold uppercase tracking-widest">End_Gate</span>
+              <div className="h-[1px] flex-grow bg-zinc-900" />
+            </div>
+            <span className="text-[10px] text-zinc-600 font-mono uppercase tracking-tight">Need an operative account?</span>{" "}
+            <Link to="/signup" className="text-emerald-500 hover:text-emerald-400 transition-colors font-bold pl-2 font-mono uppercase text-[10px] tracking-widest">
               Join the Vanguard
             </Link>
           </div>

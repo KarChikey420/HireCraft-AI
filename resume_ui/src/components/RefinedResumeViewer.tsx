@@ -15,13 +15,13 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
       {/* Summary Section */}
       <section className="relative group">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+          <div className="p-2 rounded border border-emerald-500/20 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
             <Rocket className="h-5 w-5 text-emerald-500" />
           </div>
-          <h3 className="text-xl font-bold tracking-tight text-zinc-100">Executive Summary</h3>
+          <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">[ EXECUTIVE_SUMMARY ]</h3>
         </div>
-        <div className="p-6 rounded-2xl bg-card border border-border backdrop-blur-sm group-hover:border-emerald-500/30 transition-colors duration-500">
-          <p className="text-zinc-400 leading-relaxed italic text-lg">
+        <div className="p-8 rounded border border-zinc-900 bg-zinc-950 hover:border-emerald-500/20 transition-colors duration-500">
+          <p className="text-zinc-500 font-mono text-sm leading-relaxed italic uppercase tracking-tighter">
             "{refined_sections.summary}"
           </p>
         </div>
@@ -30,27 +30,30 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
       {/* Experience Section */}
       <section>
         <div className="flex items-center gap-3 mb-8">
-          <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+          <div className="p-2 rounded border border-emerald-500/20 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
             <Briefcase className="h-5 w-5 text-emerald-500" />
           </div>
-          <h3 className="text-xl font-bold tracking-tight text-zinc-100">Optimized Experience</h3>
+          <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">[ OPTIMIZED_CHRONOLOGY ]</h3>
         </div>
-        <div className="space-y-8">
+        <div className="space-y-10">
           {refined_sections.experience.map((exp, idx) => (
-            <div key={idx} className="relative pl-8 border-l border-border group">
-              <div className="absolute left-[-5px] top-0 h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-emerald-500 transition-colors" />
-              <div className="mb-4">
+            <div key={idx} className="relative pl-8 border-l border-zinc-900 group">
+              <div className="absolute left-[-2.5px] top-0 h-[6px] w-[6px] bg-zinc-800 group-hover:bg-emerald-500 transition-colors" />
+              <div className="mb-6">
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
-                  <h4 className="text-lg font-bold text-zinc-100">{exp.role}</h4>
-                  <Badge variant="outline" className="text-zinc-500 border-border font-mono text-[10px]">{exp.duration}</Badge>
+                  <h4 className="text-lg font-bold text-zinc-100 uppercase tracking-tighter font-mono">{exp.role}</h4>
+                  <Badge variant="outline" className="text-zinc-600 border-zinc-900 font-mono text-[9px] uppercase tracking-widest bg-zinc-950">{exp.duration}</Badge>
                 </div>
-                <p className="text-zinc-500 font-bold font-mono text-xs uppercase tracking-wide mb-4">{exp.company}</p>
+                <div className="flex items-center gap-2">
+                  <div className="h-[1px] w-4 bg-emerald-500/50" />
+                  <p className="text-[10px] text-zinc-600 font-bold font-mono uppercase tracking-widest">{exp.company}</p>
+                </div>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {exp.bullets_refined.map((bullet, bIdx) => (
-                  <div key={bIdx} className="flex gap-3 text-sm leading-relaxed text-zinc-400 group/bullet">
-                    <ChevronRight className="h-4 w-4 text-zinc-600 mt-0.5 group-hover/bullet:text-emerald-500 transition-colors shrink-0" />
-                    <p>{bullet}</p>
+                  <div key={bIdx} className="flex gap-4 text-[11px] leading-relaxed text-zinc-500 group/bullet font-mono uppercase tracking-tighter">
+                    <ChevronRight className="h-3.5 w-3.5 text-zinc-800 mt-0.5 group-hover/bullet:text-emerald-500 transition-colors shrink-0" />
+                    <p className="group-hover/bullet:text-zinc-300 transition-colors">{bullet}</p>
                   </div>
                 ))}
               </div>
@@ -62,32 +65,32 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
       {/* Skills Section */}
       <section>
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+          <div className="p-2 rounded border border-emerald-500/20 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
             <Code className="h-5 w-5 text-emerald-500" />
           </div>
-          <h3 className="text-xl font-bold tracking-tight text-zinc-100">Strategic Skills</h3>
+          <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">[ STRATEGIC_ASSET_MATRIX ]</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-card border border-border">
-            <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 block mb-4 font-mono">Newly Added / Optimized</span>
+          <div className="p-8 rounded border border-zinc-900 bg-zinc-950">
+            <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-zinc-700 block mb-6 font-mono">01 // INJECTED_KEYNodes</span>
             <div className="flex flex-wrap gap-2">
               {refined_sections.skills.added.map((skill, idx) => (
-                <Badge key={idx} className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 hover:bg-emerald-500/20 cursor-default px-3 py-1 font-mono text-[10px]">
+                <Badge key={idx} className="bg-emerald-500/5 text-emerald-500 border-emerald-500/20 hover:bg-emerald-500/10 cursor-default px-3 py-1 font-mono text-[9px] rounded-none uppercase tracking-tighter shadow-[0_0_10px_rgba(16,185,129,0.05)]">
                   {skill}
                 </Badge>
               ))}
               {refined_sections.skills.refined.map((skill, idx) => (
-                <Badge key={idx} className="bg-emerald-500/10 text-zinc-100 border-border hover:bg-zinc-800 cursor-default px-3 py-1 font-mono text-[10px]">
+                <Badge key={idx} className="bg-zinc-900/50 text-zinc-400 border-zinc-800 hover:bg-zinc-800 cursor-default px-3 py-1 font-mono text-[9px] rounded-none uppercase tracking-tighter">
                   {skill}
                 </Badge>
               ))}
             </div>
           </div>
-          <div className="p-6 rounded-2xl bg-card border border-border opacity-60">
-            <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 block mb-4 font-mono">Removed for ATS Optimization</span>
+          <div className="p-8 rounded border border-zinc-900 bg-zinc-950 opacity-40 grayscale">
+            <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-zinc-800 block mb-6 font-mono">02 // DEPRECATED_LEGACY</span>
             <div className="flex flex-wrap gap-2">
               {refined_sections.skills.removed.map((skill, idx) => (
-                <Badge key={idx} variant="outline" className="text-zinc-600 border-border line-through font-mono text-[10px]">
+                <Badge key={idx} variant="outline" className="text-zinc-700 border-zinc-900 line-through font-mono text-[9px] rounded-none uppercase tracking-tighter">
                   {skill}
                 </Badge>
               ))}
@@ -96,7 +99,5 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
         </div>
       </section>
     </div>
-  );
-}
   );
 }

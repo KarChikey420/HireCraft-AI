@@ -5,24 +5,48 @@ interface LoadingOverlayProps {
   message?: string;
 }
 
-export function LoadingOverlay({ message = "Processing your request..." }: LoadingOverlayProps) {
+export function LoadingOverlay({ message = "EXEC_PROCESS..." }: LoadingOverlayProps) {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="flex flex-col items-center gap-6 p-8 rounded-3xl bg-card border border-border shadow-2xl shadow-emerald-500/10 max-w-sm w-full mx-4 animate-in zoom-in-95 duration-500">
-        <div className="relative">
-          <div className="absolute inset-0 bg-emerald-500/20 blur-2xl rounded-full" />
-          <div className="relative p-4 bg-background rounded-2xl border border-border">
-            <Loader2 className="h-10 w-10 text-emerald-500 animate-spin" />
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950/90 backdrop-blur-sm animate-in fade-in duration-300">
+      <div className="scanline pointer-events-none opacity-20" />
+      
+      <div className="flex flex-col items-start gap-6 p-6 rounded border border-zinc-800 bg-zinc-900 shadow-[0_0_50px_rgba(0,0,0,0.5)] max-w-sm w-full mx-4 animate-in zoom-in-95 duration-500 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-emerald-500/30 animate-[scan_2s_linear_infinite]" />
+        
+        <div className="w-full flex justify-between items-center border-b border-zinc-800 pb-4">
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-widest leading-none">Status: Running</span>
+          </div>
+          <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-tighter">TASK_ID: {Math.random().toString(16).slice(2, 8)}</span>
+        </div>
+
+        <div className="space-y-4 w-full">
+          <div className="space-y-1">
+            <h3 className="text-xs font-bold font-mono tracking-tighter text-zinc-100 uppercase">{message}</h3>
+            <p className="text-[9px] font-mono text-zinc-500 uppercase leading-relaxed tracking-tight">
+              Executing atomic optimization nodes...
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-[8px] font-mono text-zinc-600 uppercase">
+              <span>Progress</span>
+              <span>[ AUTOMATED ]</span>
+            </div>
+            <div className="w-full bg-zinc-950 h-1 rounded-none overflow-hidden border border-zinc-800">
+              <div className="bg-emerald-500 h-full animate-[progress_1.5s_ease-in-out_infinite] shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+            </div>
           </div>
         </div>
-        <div className="text-center">
-          <h3 className="text-lg font-bold font-mono tracking-tight text-zinc-100 mb-1">{message}</h3>
-          <p className="text-sm text-zinc-500">This might take a few seconds as our AI agents optimize your resume.</p>
-        </div>
-        <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
-          <div className="bg-emerald-500 h-full animate-[progress_2s_ease-in-out_infinite]" />
+
+        <div className="w-full pt-4 font-mono text-[8px] text-zinc-700 leading-tight uppercase border-t border-zinc-800/50">
+          - INITIALIZING LLM_ENGINE<br/>
+          - PENDING SECTOR_SCAN<br/>
+          - SYST: HireCraft_Core.dll
         </div>
       </div>
     </div>
   );
 }
+

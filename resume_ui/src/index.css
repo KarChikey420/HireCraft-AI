@@ -10,47 +10,47 @@
 
 @layer base {
   :root {
+    --background: 240 10% 3.9%; /* Rich Carbon #0a0a0a */
+    --foreground: 0 0% 98%;
+    --card: 240 10% 4.9%; /* Slightly lighter carbon */
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 160 84% 39%; /* Emerald 500 */
+    --primary-foreground: 161 94% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.1%; /* Sharper, darker border */
+    --input: 240 3.7% 15.9%;
+    --ring: 160 84% 39%;
+    --radius: 0.125rem; /* Ultra sharp for technical feel */
+  }
+
+  .light {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 160 84% 39%; /* Emerald 500 */
+    --primary: 160 84% 39%;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 160 84% 39%; /* Emerald 500 */
-    --accent-foreground: 0 0% 98%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 160 84% 39%;
-    --radius: 0.75rem;
-  }
-
-  .dark {
-    --background: 0 0% 4%; /* Carbon #0a0a0a */
-    --foreground: 0 0% 93%; /* #ededed */
-    --card: 0 0% 7%; /* #121212 */
-    --card-foreground: 0 0% 93%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 93%;
-    --primary: 160 84% 39%; /* Emerald 500 */
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 0 0% 11%; /* #1c1c1c */
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 11%;
-    --muted-foreground: 0 0% 63%;
-    --accent: 0 0% 11%;
-    --accent-foreground: 0 0% 93%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%; /* #262626 */
-    --input: 0 0% 15%;
     --ring: 160 84% 39%;
   }
 }
@@ -60,25 +60,53 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased bg-grid;
-    font-family: 'DM Sans', sans-serif;
+    @apply bg-background text-foreground font-sans antialiased bg-grid custom-scrollbar;
   }
 }
 
 @layer utilities {
   .bg-grid {
-    background-image: radial-gradient(circle at 2px 2px, rgba(16, 185, 129, 0.07) 1px, transparent 0);
+    background-image: 
+      linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
     background-size: 40px 40px;
   }
+  
+  .bg-dot-grid {
+    background-image: radial-gradient(circle at 1px 1px, rgba(16, 185, 129, 0.1) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
+    height: 5px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors;
+    @apply bg-zinc-800 border border-zinc-700 hover:bg-emerald-500/20 transition-colors;
   }
+
+  .terminal-glow {
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+  }
+
+  .scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 10;
+    background: linear-gradient(0deg, rgba(16, 185, 129, 0) 0%, rgba(16, 185, 129, 0.05) 50%, rgba(16, 185, 129, 0) 100%);
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 8s linear infinite;
+  }
+}
+
+@keyframes scanline {
+  0% { bottom: 100%; }
+  100% { bottom: -100px; }
 }
 
 @keyframes progress {
@@ -108,3 +136,9 @@
 .animate-fade-up {
   animation: fadeUp 0.6s ease-out forwards;
 }
+
+/* GitHub style tab indicator shadow */
+.tab-underline {
+  @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-emerald-500;
+}
+

@@ -26,7 +26,7 @@ export function ATSScoreGauge({ score, size = 160 }: ATSScoreGaugeProps) {
   const shadowColor = getShadowColor(score);
 
   return (
-    <div className="relative flex items-center justify-center animate-in zoom-in duration-700" style={{ width: size, height: size }}>
+    <div className="relative flex items-center justify-center animate-in zoom-in duration-700 font-mono" style={{ width: size, height: size }}>
       <svg className="transform -rotate-90" width={size} height={size}>
         {/* Background Circle */}
         <circle
@@ -34,9 +34,9 @@ export function ATSScoreGauge({ score, size = 160 }: ATSScoreGaugeProps) {
           cy={size / 2}
           r={radius}
           stroke="currentColor"
-          strokeWidth="10"
+          strokeWidth="8"
           fill="transparent"
-          className="text-zinc-800"
+          className="text-zinc-900"
         />
         {/* Progress Circle */}
         <circle
@@ -44,11 +44,10 @@ export function ATSScoreGauge({ score, size = 160 }: ATSScoreGaugeProps) {
           cy={size / 2}
           r={radius}
           stroke={color}
-          strokeWidth="10"
+          strokeWidth="8"
           fill="transparent"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          strokeLinecap="round"
           className="transition-all duration-1000 ease-out"
           style={{
             filter: `drop-shadow(0 0 8px ${shadowColor})`
@@ -57,8 +56,8 @@ export function ATSScoreGauge({ score, size = 160 }: ATSScoreGaugeProps) {
       </svg>
       {/* Center Content */}
       <div className="absolute flex flex-col items-center justify-center">
-        <span className="text-4xl font-bold tracking-tighter text-zinc-100">{score}</span>
-        <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-500">Score</span>
+        <span className="text-4xl font-bold tracking-tighter text-zinc-100 leading-none">{score}</span>
+        <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-600 mt-1">Fidelity</span>
       </div>
     </div>
   );
