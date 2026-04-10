@@ -141,4 +141,3 @@
 .tab-underline {
   @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-emerald-500;
 }
-
