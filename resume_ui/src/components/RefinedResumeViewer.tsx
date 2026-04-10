@@ -46,7 +46,7 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
             </h3>
           </div>
           <div className="space-y-3">
-            {data.suggestions.map((suggestion, index) => (
+            {(data.suggestions ?? []).map((suggestion, index) => (
               <div 
                 key={index}
                 className="flex gap-4 p-4 rounded border border-zinc-900 bg-zinc-950/20 group hover:border-zinc-800 transition-colors"
@@ -70,7 +70,7 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
           </div>
           <div className="p-6 rounded border border-zinc-900 bg-zinc-950/40">
             <div className="flex flex-wrap gap-2">
-              {data.technical_keywords.map((keyword, index) => (
+              {(data.technical_keywords ?? []).map((keyword, index) => (
                 <Badge 
                   key={index} 
                   variant="outline"

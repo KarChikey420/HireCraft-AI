@@ -85,14 +85,14 @@ export function RecruiterSimulationCard({ data }: RecruiterSimulationCardProps) 
         </div>
 
         {/* Hazards/Risks */}
-        {data.rejection_risks.length > 0 && (
+        {(data.rejection_risks ?? []).length > 0 && (
           <div className="pt-6 border-t border-zinc-900">
             <h5 className="text-[9px] font-bold uppercase tracking-[0.2em] text-red-900 mb-4 flex items-center gap-2 font-mono">
               <AlertTriangle className="h-3 w-3" />
               Critical_Failure_Risks
             </h5>
             <div className="flex flex-wrap gap-2">
-              {data.rejection_risks.map((risk, idx) => (
+              {(data.rejection_risks ?? []).map((risk, idx) => (
                 <div key={idx} className="px-2 py-1.5 rounded border border-red-900/10 bg-red-900/5 text-[9px] font-bold font-mono text-red-900/60 uppercase tracking-tighter">
                   {risk}
                 </div>
