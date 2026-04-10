@@ -8,7 +8,8 @@ interface RefinedResumeViewerProps {
 }
 
 export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
-  const { refined_sections, gap_analysis } = data;
+  const refined_sections = data?.refined_sections;
+  const gap_analysis = data?.gap_analysis;
 
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
@@ -26,7 +27,7 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
         
         <div className="p-8 rounded border border-zinc-900 bg-zinc-950/40 relative group">
           <pre className="text-xs text-zinc-300 whitespace-pre-wrap leading-relaxed font-mono selection:bg-emerald-500/30">
-            {refined_sections.summary}
+            {refined_sections?.summary ?? "No summary generated."}
           </pre>
         </div>
       </section>
@@ -44,7 +45,7 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
         </div>
 
         <div className="space-y-8">
-          {(refined_sections.experience ?? []).map((exp, idx) => (
+          {(refined_sections?.experience ?? []).map((exp, idx) => (
             <div key={idx} className="relative pl-6 border-l border-zinc-900 space-y-4">
               <div className="absolute top-0 left-[-1px] w-[1px] h-4 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
@@ -84,7 +85,7 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
 
         <div className="p-8 rounded border border-zinc-900 bg-zinc-950/40">
           <div className="flex flex-wrap gap-2">
-            {(refined_sections.skills.refined ?? []).map((skill, index) => (
+            {(refined_sections?.skills?.refined ?? []).map((skill, index) => (
               <Badge 
                 key={index} 
                 variant="outline"
@@ -105,7 +106,7 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
             <h3 className="text-[10px] font-bold text-zinc-500 font-mono uppercase tracking-[0.2em]">Optimization_Queue</h3>
           </div>
           <div className="space-y-3">
-            {(gap_analysis.what_to_fix_next ?? data.what_to_fix_next ?? []).map((log, index) => (
+            {(data?.what_to_fix_next ?? []).map((log, index) => (
               <div key={index} className="flex gap-4 p-4 rounded border border-zinc-900 bg-zinc-950/20">
                 <span className="text-[10px] font-mono text-zinc-800">0{index + 1}</span>
                 <p className="text-[10px] text-zinc-500 font-mono leading-relaxed uppercase tracking-tight">
@@ -123,7 +124,7 @@ export function RefinedResumeViewer({ data }: RefinedResumeViewerProps) {
           </div>
           <div className="p-6 rounded border border-zinc-900 bg-zinc-950/40">
              <div className="flex flex-wrap gap-2">
-                {(gap_analysis.missing_keywords ?? []).map((kw, index) => (
+                {(gap_analysis?.missing_keywords ?? []).map((kw, index) => (
                   <Badge key={index} variant="destructive" className="bg-red-500/5 border-red-500/20 text-red-500/70 text-[9px] lowercase">
                     {kw}
                   </Badge>

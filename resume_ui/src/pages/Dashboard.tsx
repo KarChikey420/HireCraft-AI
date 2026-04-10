@@ -348,9 +348,9 @@ export default function Dashboard() {
                          {/* Section Scores */}
                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                            {[
-                             { label: "Skills_Match", score: atsData.section_scores.skills, color: "bg-emerald-500" },
-                             { label: "Exp_Match", score: atsData.section_scores.experience, color: "bg-emerald-500" },
-                             { label: "Ctx_Alpha", score: atsData.section_scores.summary, color: "bg-emerald-500" }
+                             { label: "Skills_Match", score: atsData.section_scores?.skills ?? 0, color: "bg-emerald-500" },
+                             { label: "Exp_Match", score: atsData.section_scores?.experience ?? 0, color: "bg-emerald-500" },
+                             { label: "Ctx_Alpha", score: atsData.section_scores?.summary ?? 0, color: "bg-emerald-500" }
                            ].map((item, i) => (
                              <div key={i} className="p-4 rounded border border-zinc-800 bg-zinc-950/30 space-y-3">
                                <div className="flex justify-between items-center text-[9px] font-bold uppercase tracking-widest text-zinc-500 font-mono">
@@ -372,7 +372,7 @@ export default function Dashboard() {
                                Found_Keywords
                              </h4>
                              <div className="flex flex-wrap gap-2">
-                               {atsData.matched_keywords.map((kw, i) => (
+                               {(atsData.matched_keywords ?? []).map((kw, i) => (
                                  <Badge key={i} variant="default" className="text-[9px]">{kw}</Badge>
                                ))}
                              </div>
@@ -383,7 +383,7 @@ export default function Dashboard() {
                                Critical_Gaps
                              </h4>
                              <div className="flex flex-wrap gap-2">
-                               {atsData.missing_keywords.map((kw, i) => (
+                               {(atsData.missing_keywords ?? []).map((kw, i) => (
                                  <Badge key={i} variant="destructive" className="text-[9px]">{kw}</Badge>
                                ))}
                              </div>
@@ -397,7 +397,7 @@ export default function Dashboard() {
                              [ ACTION_ITEMS: OPTIMIZE_NODE ]
                            </h4>
                            <div className="space-y-1">
-                              {atsData.suggestions.map((sug, i) => (
+                              {(atsData.suggestions ?? []).map((sug, i) => (
                                 <div key={i} className="flex gap-4 p-4 rounded border border-zinc-900 bg-zinc-950/20 hover:bg-zinc-900 transition-colors group">
                                   <div className="text-emerald-500 font-bold text-xs tracking-tighter font-mono">[{i+1}]</div>
                                   <p className="text-zinc-400 text-[10px] font-mono leading-relaxed uppercase tracking-tighter">{sug}</p>

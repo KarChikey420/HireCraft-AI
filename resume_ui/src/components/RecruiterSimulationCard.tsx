@@ -8,7 +8,21 @@ interface RecruiterSimulationCardProps {
 }
 
 export function RecruiterSimulationCard({ data }: RecruiterSimulationCardProps) {
-  const getStatusConfig = (status: string) => {
+  if (!data) {
+    return (
+      <div className="p-8 rounded border border-zinc-900 bg-zinc-950/50 flex flex-col items-center justify-center text-center space-y-4">
+        <div className="p-3 rounded-full bg-zinc-900 border border-zinc-800 animate-pulse">
+          <Timer className="h-5 w-5 text-zinc-600" />
+        </div>
+        <div className="space-y-1">
+          <p className="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-widest">[ ENGINE: SIMULATING ]</p>
+          <p className="text-[9px] font-mono text-zinc-700 uppercase tracking-tighter italic">Analyzing recruiter bias patterns...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const getStatusConfig = (status?: string) => {
     switch (status) {
       case 'YES':
         return { 
