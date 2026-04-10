@@ -12,13 +12,13 @@ export function ATSScoreGauge({ score, size = 160 }: ATSScoreGaugeProps) {
 
   const getColor = (s: number) => {
     if (s >= 80) return '#10b981'; // emerald-500
-    if (s >= 60) return '#f59e0b'; // amber-500
+    if (s >= 60) return '#6b7280'; // zinc-500
     return '#ef4444'; // red-500
   };
 
   const getShadowColor = (s: number) => {
     if (s >= 80) return 'rgba(16, 185, 129, 0.2)';
-    if (s >= 60) return 'rgba(245, 158, 11, 0.2)';
+    if (s >= 60) return 'rgba(107, 114, 128, 0.2)';
     return 'rgba(239, 68, 68, 0.2)';
   };
 

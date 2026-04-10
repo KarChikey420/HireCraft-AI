@@ -20,11 +20,11 @@ export function RecruiterSimulationCard({ data }: RecruiterSimulationCardProps) 
         };
       case 'MAYBE':
         return { 
-          icon: <Info className="h-6 w-6 text-amber-500" />, 
-          bg: 'bg-amber-500/10', 
-          border: 'border-amber-500/20', 
+          icon: <Info className="h-6 w-6 text-zinc-400" />, 
+          bg: 'bg-zinc-500/10', 
+          border: 'border-zinc-500/20', 
           text: 'Potential Fit', 
-          color: 'text-amber-500' 
+          color: 'text-zinc-400' 
         };
       default:
         return { 

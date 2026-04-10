@@ -63,8 +63,8 @@ export function FileUpload({
       className={cn(
         "relative rounded-3xl border-2 border-dashed transition-all duration-500 group",
         isDragging
-          ? "border-amber-500 bg-amber-500/5 scale-[1.01] shadow-2xl shadow-amber-500/10"
-          : "border-zinc-800 bg-zinc-900/40 hover:border-zinc-700 hover:bg-zinc-900/60",
+          ? "border-emerald-500 bg-emerald-500/5 scale-[1.01] shadow-2xl shadow-emerald-500/10"
+          : "border-border bg-card/40 hover:border-emerald-500/30 hover:bg-card/60",
         isUploading && "pointer-events-none opacity-50"
       )}
       onDragOver={handleDragOver}
@@ -80,30 +80,30 @@ export function FileUpload({
       />
       <div className="flex flex-col items-center justify-center p-12 text-center min-h-[320px] relative overflow-hidden">
         {/* Background glow effect on hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
         
         {isUploading ? (
           <div className="space-y-6 animate-in fade-in zoom-in duration-300">
             <div className="relative">
-              <div className="absolute inset-0 bg-amber-500/20 blur-xl rounded-full" />
-              <Loader2 className="h-16 w-16 text-amber-500 animate-spin relative" />
+              <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full" />
+              <Loader2 className="h-16 w-16 text-emerald-500 animate-spin relative" />
             </div>
             <div className="space-y-2">
               <p className="text-lg font-bold text-zinc-100 tracking-tight">Processing Engine...</p>
-              <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest">Atomic Analysis in progress</p>
+              <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest font-mono">Atomic Analysis in progress</p>
             </div>
           </div>
         ) : selectedFile ? (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 w-full max-w-sm mx-auto">
-            <div className="flex items-center gap-4 p-6 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl relative group-file">
-              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                <File className="h-8 w-8 text-amber-500" />
+            <div className="flex items-center gap-4 p-6 bg-card border border-border rounded-2xl shadow-2xl relative group-file">
+              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                <File className="h-8 w-8 text-emerald-500" />
               </div>
               <div className="text-left flex-grow min-w-0">
-                <p className="text-sm font-bold text-zinc-100 truncate">
+                <p className="text-sm font-bold text-zinc-100 truncate font-mono">
                   {selectedFile.name}
                 </p>
-                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
+                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1 font-mono">
                   {(selectedFile.size / 1024 / 1024).toFixed(2)} MB • Ready
                 </p>
               </div>
@@ -117,16 +117,13 @@ export function FileUpload({
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="space-y-4">
-               <p className="text-xs text-zinc-500 font-medium">Click or drag another file to replace</p>
-            </div>
           </div>
         ) : (
           <div className="space-y-6 transition-transform duration-500 group-hover:scale-[1.02]">
             <div className="relative mx-auto w-fit">
-              <div className="absolute inset-0 bg-amber-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="p-6 rounded-2xl bg-zinc-950 border border-zinc-900 shadow-xl relative transition-all group-hover:border-amber-500/30">
-                <Upload className="h-10 w-10 text-amber-500 group-hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-emerald-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="p-6 rounded-2xl bg-background border border-border shadow-xl relative transition-all group-hover:border-emerald-500/30">
+                <Upload className="h-10 w-10 text-emerald-500 group-hover:scale-110 transition-transform duration-500" />
               </div>
             </div>
             <div className="space-y-2">
@@ -134,7 +131,7 @@ export function FileUpload({
               <p className="text-sm text-zinc-500 font-medium">{description}</p>
             </div>
             <div className="pt-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-[10px] font-bold text-zinc-400 uppercase tracking-widest font-mono">
                 Drag & drop or click to browse
               </div>
             </div>
@@ -143,4 +140,5 @@ export function FileUpload({
       </div>
     </div>
   );
+}
 }
