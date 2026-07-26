@@ -15,14 +15,14 @@ logger = logging.getLogger(__name__)
 # ── Helpers ─────────────────────────────────────────────────────────────────
 
 def _get_llm(temperature: float = 0.2) -> ChatOpenAI:
-    """Return a configured OpenAI-compatible instance (gpt-oss-120b)."""
-    # The API key is stored in the .env as 'gpt-oss-120'
-    api_key = os.getenv("gpt-oss-120")
+    """Return a configured OpenAI-compatible instance."""
+    # The API key is stored in the .env as 'NVIDIA_API_KEY'
+    api_key = os.getenv("NVIDIA_API_KEY")
     if not api_key:
-        raise ValueError("gpt-oss-120 API key missing in environment.")
+        raise ValueError("NVIDIA_API_KEY missing in environment.")
     
     return ChatOpenAI(
-        model="meta/llama-3.1-405b-instruct",
+        model="openai/gpt-oss-20b",
         api_key=api_key,
         base_url="https://integrate.api.nvidia.com/v1",  # Official NVIDIA Cloud API
         temperature=temperature,
